@@ -1,10 +1,11 @@
 {
-  "name": "Cocktail Express Manager",
+  "name": "Cocktail-Express-Manager",
   "version": "1.0.0",
   "description": "Event Tracking App",
   "main": "server.js",
   "scripts": {
     "start": "node backend/server.js",
+    "build": "npm i && cd frontend && npm i && npm run build",
     "server": "nodemon backend/server.js",
     "client": "npm run start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\""

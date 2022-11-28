@@ -1,14 +1,14 @@
 import { Form } from "react-bootstrap";
 
-const Input = ({ label, error, name, ...rest }) => {
+export const Input = ({ label, error, name, ...rest }) => {
   return (
     <Form.Group className="py-2">
       <Form.Label>{label}:</Form.Label>
       <Form.Control
         placeholder={label}
+        {...rest}
         name={name}
         isInvalid={error}
-        {...rest}
       ></Form.Control>
       <Form.Control.Feedback className="py-1" type="invalid">
         {error}
