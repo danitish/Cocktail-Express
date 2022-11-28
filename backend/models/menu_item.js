@@ -12,7 +12,15 @@ const schema = new mongoose.Schema(
       ref: "item",
       required: true,
     },
-    qty_per_person: {
+    item_quantity: {
+      type: Number,
+      required: true,
+    },
+    item_per_person: {
+      type: Number,
+      required: true,
+    },
+    price_per_person: {
       type: Number,
       required: true,
     },
