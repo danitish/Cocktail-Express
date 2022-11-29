@@ -12,7 +12,7 @@ export const login =
     try {
       dispatch({ type: USER_LOGIN_REQUEST });
 
-      const { data } = await axios.post("/users/login", {
+      const { data } = await axios.post("/api/users/login", {
         email,
         password,
       });
