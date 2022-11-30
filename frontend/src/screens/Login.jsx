@@ -8,6 +8,8 @@ import { login } from "../store/actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
 
 const Login = () => {
   const { userInfo, loading, error } = useSelector((state) => state.userLogin);
@@ -50,7 +52,8 @@ const Login = () => {
         />
       </div>
       <FormContainer>
-        {error && <p>{error}</p>}
+        {loading && <Loader />}
+        {error && <Message>{error}</Message>}
         <Form noValidate onSubmit={form.handleSubmit}>
           <Input
             label="Email"

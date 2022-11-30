@@ -32,6 +32,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
   const { error } = loginValidation(req.body);
+
   if (error) {
     res.status(400);
     throw new Error(error.details[0].message);
@@ -39,16 +40,18 @@ const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
-  if (!(await user.matchedPasswords(password)) || !user) {
-    res.status(400);
-    throw new Error("Wrong email or password, try again");
+  if (user && (await user.matchedPasswords(password))) {
+    res.send({
+      _id: user._id,
+      full_name: user.full_name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: user.generateToken(),
+    });
+    return;
   }
-  res.send({
-    full_name: user.full_name,
-    email: user.email,
-    isAdmin: user.isAdmin,
-    token: user.generateToken(),
-  });
+  res.status(400);
+  throw new Error("Invalid email or password");
 });
 
 module.exports = { registerUser, loginUser };

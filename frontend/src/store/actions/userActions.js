@@ -4,7 +4,7 @@ import {
   USER_LOGIN_SUCCESS,
   USER_LOGOUT,
 } from "../constants/userConstants";
-import axios from "axios";
+import httpService from "../../services/httpService";
 
 export const login =
   ({ email, password }) =>
@@ -12,7 +12,7 @@ export const login =
     try {
       dispatch({ type: USER_LOGIN_REQUEST });
 
-      const { data } = await axios.post("/api/users/login", {
+      const { data } = await httpService.post("/api/users/login", {
         email,
         password,
       });
@@ -23,7 +23,7 @@ export const login =
       dispatch({
         type: USER_LOGIN_FAIL,
         payload:
-          error.response & error.response.data.message
+          error.response && error.response.data.message
             ? error.response.data.message
             : error.message,
       });
