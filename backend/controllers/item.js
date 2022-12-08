@@ -1,4 +1,5 @@
 const Item = require("../models/item");
+const Menu_Item = require("../models/menu_item");
 const asyncHandler = require("express-async-handler");
 
 const createItem = asyncHandler(async (req, res) => {
@@ -27,13 +28,15 @@ const getMyItems = asyncHandler(async (req, res) => {
 });
 
 const deleteItem = asyncHandler(async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
   const item = await Item.findById(id);
   if (!item) {
     res.status(404);
     throw new Error("No matching item found");
   }
   await item.remove();
+  await Menu_Item.deleteMany({ item_id: id });
+
   res.status(200);
   res.send("Item was successfully removed");
 });

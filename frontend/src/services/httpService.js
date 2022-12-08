@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = "https://test-cocktail-express.onrender.com";
 
 export const httpService = {
   get: axios.get,

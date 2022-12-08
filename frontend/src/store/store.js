@@ -1,11 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { userLoginReducer } from "./reducers/userReducers";
-import { myItemsReducer, addItemReducer } from "./reducers/itemReducers";
+import {
+  myItemsReducer,
+  addItemReducer,
+  removeItemReducer,
+} from "./reducers/itemReducers";
 
 const reducer = {
   userLogin: userLoginReducer,
   addItem: addItemReducer,
   myItems: myItemsReducer,
+  removeItem: removeItemReducer,
 };
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

@@ -4,6 +4,11 @@ import { LinkContainer } from "react-router-bootstrap";
 
 const Header = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
+  const navItems = [
+    { name: "Events", url: "/events" },
+    { name: "Menus", url: "/menus" },
+    { name: "Items", url: "/items" },
+  ];
   return (
     <Navbar bg="info" expand="sm">
       <Container fluid>
@@ -13,15 +18,11 @@ const Header = () => {
         </LinkContainer>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <LinkContainer to="/events">
-              <Nav.Link>Events</Nav.Link>
-            </LinkContainer>
-            <LinkContainer to="/menus">
-              <Nav.Link>Menus</Nav.Link>
-            </LinkContainer>
-            <LinkContainer to="/items">
-              <Nav.Link>Items</Nav.Link>
-            </LinkContainer>
+            {navItems.map((item) => (
+              <LinkContainer key={item.name} to={item.url}>
+                <Nav.Link>{item.name}</Nav.Link>
+              </LinkContainer>
+            ))}
           </Nav>
           {userInfo && (
             <Nav className="ms-auto mr-5">

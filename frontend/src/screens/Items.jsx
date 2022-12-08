@@ -5,23 +5,31 @@ import Input from "../common/Input";
 import Joi from "joi";
 import FormContainer from "../components/FormContainer";
 import { useState, useEffect } from "react";
-import { getMyItems, addItem } from "../store/actions/itemActions";
+import { getMyItems, addItem, removeItem } from "../store/actions/itemActions";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 
 const Items = () => {
   const dispatch = useDispatch();
+
   const { loading, items, error } = useSelector((state) => state.myItems);
   const { error: addItemError, success: addItemSuccess } = useSelector(
     (state) => state.addItem
+  );
+  const { error: removeItemError, success: removeItemSuccess } = useSelector(
+    (state) => state.removeItem
   );
 
   const [toggleAddItemForm, setToggleAddItemForm] = useState(false);
 
   useEffect(() => {
     dispatch(getMyItems());
-  }, [dispatch, addItemSuccess]);
+    if (addItemSuccess) {
+      form.values.name = "";
+      form.values.price = "";
+    }
+  }, [dispatch, addItemSuccess, removeItemSuccess]);
 
   const form = useFormik({
     validateOnMount: true,
@@ -38,20 +46,24 @@ const Items = () => {
     },
   });
 
+  const deleteItemHandler = (id) => {
+    dispatch(removeItem(id));
+  };
+
   return (
     <>
       {toggleAddItemForm ? (
         <Button
           onClick={() => setToggleAddItemForm(!toggleAddItemForm)}
           variant
-          className="d-flex flex-column align-items-center mx-4 border-0"
+          className="d-flex flex-column align-items-center mx-4 border-0 ms-4"
         >
           <i className="fa fa-toggle-on fa-3x" aria-hidden="true"></i>
           <span className="mt-2">Exit form</span>
         </Button>
       ) : (
         <Button
-          className="d-flex flex-column align-items-center mx-4 border-0"
+          className="d-flex flex-column align-items-center mx-4 border-0 ms-3"
           onClick={() => setToggleAddItemForm(!toggleAddItemForm)}
           variant
         >
@@ -86,11 +98,17 @@ const Items = () => {
           </Form>
         </FormContainer>
       )}
+      <hr />
       {loading && <Loader />}
       {error && <Message>{error}</Message>}
+      {removeItemError && <Message>{removeItemError}</Message>}
       {items && items.length ? (
         <>
           <h3 className="mt-5 mb-3 fst-italic">My Items:</h3>
+          <div className="text-danger mb-2">
+            <span>*</span> Deleting an item will also remove it from associated
+            menus <span>*</span>
+          </div>
           <Table striped bordered hover responsive className="table-sm">
             <thead>
               <tr>
@@ -106,7 +124,14 @@ const Items = () => {
                   <td>{item._id}</td>
                   <td>{item.name}</td>
                   <td>{item.price + "₪"}</td>
-                  <td>PLACEHOLDER</td>
+                  <td className="d-flex justify-content-center">
+                    <Button
+                      title="Delete Item"
+                      onClick={() => deleteItemHandler(item._id)}
+                    >
+                      <i className="fa fa-trash" aria-hidden="true"></i>
+                    </Button>
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -5,6 +5,9 @@ import {
   ADD_ITEM_FAIL,
   ADD_ITEM_REQUEST,
   ADD_ITEM_SUCCESS,
+  REMOVE_ITEM_FAIL,
+  REMOVE_ITEM_REQUEST,
+  REMOVE_ITEM_SUCCESS,
 } from "../constants/itemConstants";
 import { httpService } from "../../services/httpService";
 
@@ -56,6 +59,34 @@ export const getMyItems = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: GET_MY_ITEMS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const removeItem = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: REMOVE_ITEM_REQUEST });
+    const {
+      userLogin: {
+        userInfo: { token },
+      },
+    } = getState();
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+
+    await httpService.delete(`/api/items/${id}`, config);
+    dispatch({ type: REMOVE_ITEM_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: REMOVE_ITEM_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
