@@ -3,13 +3,13 @@ const Menu_Item = require("../models/menu_item");
 const asyncHandler = require("express-async-handler");
 
 const createMenu = asyncHandler(async (req, res) => {
-  const { name } = req.body;
-  if (!name) {
+  const { name, description } = req.body;
+  if (!name || !description) {
     res.status(400);
     throw new Error("Insufficient values provided");
   }
 
-  const menu = await Menu.create({ name, user_id: req.user._id });
+  const menu = await Menu.create({ name, description, user_id: req.user._id });
   if (!menu) {
     res.status(500);
     throw new Error("Internal error");

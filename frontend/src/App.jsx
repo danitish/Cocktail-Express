@@ -8,6 +8,7 @@ import Login from "./screens/Login";
 import Home from "./screens/Home";
 import Logout from "./screens/Logout";
 import Items from "./screens/Items";
+import Menus from "./screens/Menus";
 
 import { useSelector } from "react-redux";
 
@@ -41,6 +42,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Items />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/menus"
+              element={
+                <ProtectedRoute>
+                  <Menus />
                 </ProtectedRoute>
               }
             />

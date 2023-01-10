@@ -1,0 +1,7 @@
+export const ADD_MENU_SUCCESS = "ADD_MENU_SUCCESS";
+export const ADD_MENU_REQUEST = "ADD_MENU_REQUEST";
+export const ADD_MENU_FAIL = "ADD_MENU_FAIL";
+
+export const MY_MENUS_SUCCESS = "MY_MENUS_SUCCESS";
+export const MY_MENUS_REQUEST = "MY_MENUS_REQUEST";
+export const MY_MENUS_FAIL = "MY_MENUS_FAIL";

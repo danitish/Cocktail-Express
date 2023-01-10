@@ -9,6 +9,7 @@ import { getMyItems, addItem, removeItem } from "../store/actions/itemActions";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import FormToggler from "../components/FormToggler";
 
 const Items = () => {
   const dispatch = useDispatch();
@@ -52,25 +53,11 @@ const Items = () => {
 
   return (
     <>
-      {toggleAddItemForm ? (
-        <Button
-          onClick={() => setToggleAddItemForm(!toggleAddItemForm)}
-          variant
-          className="d-flex flex-column align-items-center mx-4 border-0 ms-4"
-        >
-          <i className="fa fa-toggle-on fa-3x" aria-hidden="true"></i>
-          <span className="mt-2">Exit form</span>
-        </Button>
-      ) : (
-        <Button
-          className="d-flex flex-column align-items-center mx-4 border-0 ms-3"
-          onClick={() => setToggleAddItemForm(!toggleAddItemForm)}
-          variant
-        >
-          <i className="fa fa-toggle-off fa-3x" aria-hidden="true"></i>
-          <span className="mt-2">Add an item</span>
-        </Button>
-      )}
+      <FormToggler
+        desc="Add an item"
+        state={toggleAddItemForm}
+        stateHandler={setToggleAddItemForm}
+      />
 
       {toggleAddItemForm && (
         <FormContainer>
@@ -104,7 +91,7 @@ const Items = () => {
       {removeItemError && <Message>{removeItemError}</Message>}
       {items && items.length ? (
         <>
-          <h3 className="mt-5 mb-3 fst-italic">My Items:</h3>
+          <h3 className="mt-5 mb-3">My Items:</h3>
           <div className="text-danger mb-2">
             <span>*</span> Deleting an item will also remove it from associated
             menus <span>*</span>
@@ -112,7 +99,6 @@ const Items = () => {
           <Table striped bordered hover responsive className="table-sm">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>NAME</th>
                 <th>PRICE</th>
                 <th></th>
@@ -121,7 +107,6 @@ const Items = () => {
             <tbody>
               {items.map((item) => (
                 <tr key={item._id}>
-                  <td>{item._id}</td>
                   <td>{item.name}</td>
                   <td>{item.price + "₪"}</td>
                   <td className="d-flex justify-content-center">
