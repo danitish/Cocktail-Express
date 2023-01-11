@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import { toastifySuccess } from "../utils/toastify";
 
 const Login = () => {
   const { userInfo, loading, error } = useSelector((state) => state.userLogin);
@@ -18,6 +19,7 @@ const Login = () => {
 
   useEffect(() => {
     if (userInfo) {
+      toastifySuccess("Successfully logged in");
       navigate("/");
     }
   }, [userInfo, navigate]);

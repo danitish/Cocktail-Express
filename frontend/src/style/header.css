@@ -1,0 +1,7 @@
+.custom-color a:nth-child(1) {
+  color: white;
+}
+
+.custom-color a:active {
+  color: white;
+}

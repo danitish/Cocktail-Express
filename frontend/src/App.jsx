@@ -1,4 +1,6 @@
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 import { Container } from "react-bootstrap";
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./common/ProtectedRoute";
@@ -9,6 +11,7 @@ import Home from "./screens/Home";
 import Logout from "./screens/Logout";
 import Items from "./screens/Items";
 import Menus from "./screens/Menus";
+import Menu from "./screens/Menu";
 
 import { useSelector } from "react-redux";
 
@@ -16,6 +19,7 @@ function App() {
   const { userInfo } = useSelector((state) => state.userLogin);
   return (
     <div className="App d-flex flex-column min-vh-100">
+      <ToastContainer />
       {userInfo && <Header />}
       <main className="flex-fill py-3">
         <Container>
@@ -50,6 +54,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Menus />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/menus/:id"
+              element={
+                <ProtectedRoute>
+                  <Menu />
                 </ProtectedRoute>
               }
             />

@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import FormToggler from "../components/FormToggler";
+import { toastifySuccess } from "../utils/toastify";
 
 const Items = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const Items = () => {
     if (addItemSuccess) {
       form.values.name = "";
       form.values.price = "";
+      toastifySuccess("Item added successfully");
     }
   }, [dispatch, addItemSuccess, removeItemSuccess]);
 
@@ -91,7 +93,7 @@ const Items = () => {
       {removeItemError && <Message>{removeItemError}</Message>}
       {items && items.length ? (
         <>
-          <h3 className="mt-5 mb-3">My Items:</h3>
+          <h3 className="mt-5 mb-3">My Items</h3>
           <div className="text-danger mb-2">
             <span>*</span> Deleting an item will also remove it from associated
             menus <span>*</span>

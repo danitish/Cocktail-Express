@@ -12,6 +12,7 @@ import Joi from "joi";
 import validateFormikWithJoi from "../utils/validateFormikWithJoi";
 import { addMenu, getMyMenus } from "../store/actions/menuActions";
 import { useEffect } from "react";
+import { toastifySuccess } from "../utils/toastify";
 
 const Menus = () => {
   const [toggleMenuForm, setToggleMenuForm] = useState(false);
@@ -43,8 +44,8 @@ const Menus = () => {
     if (success) {
       form.values.name = "";
       form.values.description = "";
+      toastifySuccess("Menu added successfully");
     }
-    console.log(menus);
   }, [dispatch, success]);
   return (
     <>
@@ -82,7 +83,7 @@ const Menus = () => {
         </FormContainer>
       )}
       <hr />
-      <h3 className="mt-5 mb-3">My Menus:</h3>
+      <h3 className="mt-5 mb-4">My Menus</h3>
       <Row>
         {myMenusLoading && <Loader />}
         {myMenusError && <Message>{myMenusError}</Message>}
@@ -92,6 +93,7 @@ const Menus = () => {
               name={menu.name}
               description={menu.description}
               id={menu._id}
+              key={menu._id}
             />
           ))
         ) : (

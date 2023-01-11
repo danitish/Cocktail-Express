@@ -1,6 +1,7 @@
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
+import "../style/header.css";
 
 const Header = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
@@ -14,27 +15,32 @@ const Header = () => {
       <Container fluid>
         <Navbar.Toggle aria-controls="basic-navbar-nav" className="me-2" />
         <LinkContainer to="/">
-          <Navbar.Brand>Cocktail Express</Navbar.Brand>
+          <Navbar.Brand className="text-secondary">
+            Cocktail Express
+          </Navbar.Brand>
         </LinkContainer>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             {navItems.map((item) => (
               <LinkContainer key={item.name} to={item.url}>
-                <Nav.Link>{item.name}</Nav.Link>
+                <Nav.Link className="text-secondary">{item.name}</Nav.Link>
               </LinkContainer>
             ))}
           </Nav>
           {userInfo && (
             <Nav className="ms-auto mr-5">
               <NavDropdown
+                className="m-0 me-2 custom-color"
                 title={userInfo.full_name}
                 id="basic-nav-dropdown"
-                className="m-0 me-2"
               >
                 <LinkContainer className="pe-0" to="/edit-profile">
                   <NavDropdown.Item>
-                    <i className="fas fa-edit" aria-hidden="true"></i>
-                    <span className="ms-1">Edit profile</span>
+                    <i
+                      className="fas fa-edit text-black"
+                      aria-hidden="true"
+                    ></i>
+                    <span className="ms-1 text-black">Edit profile</span>
                   </NavDropdown.Item>
                 </LinkContainer>
                 <NavDropdown.Divider />
