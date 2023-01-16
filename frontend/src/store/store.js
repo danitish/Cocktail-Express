@@ -5,7 +5,12 @@ import {
   addItemReducer,
   removeItemReducer,
 } from "./reducers/itemReducers";
-import { addMenuReducer, myMenusReducer } from "./reducers/menuReducers";
+import {
+  addMenuReducer,
+  myMenusReducer,
+  menuDetailsReducer,
+  updateRatioReducer,
+} from "./reducers/menuReducers";
 
 const reducer = {
   userLogin: userLoginReducer,
@@ -14,6 +19,8 @@ const reducer = {
   removeItem: removeItemReducer,
   addMenu: addMenuReducer,
   myMenus: myMenusReducer,
+  menuDetails: menuDetailsReducer,
+  updateRatio: updateRatioReducer,
 };
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 
-const FormToggler = ({ desc, state, stateHandler }) => {
+const FormToggler = ({ desc, state, stateHandler, editIcon }) => {
   return (
     <>
       {state ? (
@@ -18,7 +18,12 @@ const FormToggler = ({ desc, state, stateHandler }) => {
           onClick={() => stateHandler(!state)}
           variant
         >
-          <i className="fa-solid fa-plus fa-3x" aria-hidden="true"></i>
+          {editIcon ? (
+            <i className="fa-regular fa-pen-to-square fa-2x"></i>
+          ) : (
+            <i className="fa-solid fa-plus fa-3x" aria-hidden="true"></i>
+          )}
+
           <span className="mt-2">{desc}</span>
         </Button>
       )}

@@ -18,6 +18,21 @@ const createMenu = asyncHandler(async (req, res) => {
   res.send(menu);
 });
 
+const getMenuById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    res.status(400);
+    throw new Error("Invalid inputs received");
+  }
+  const menu = await Menu.findById(id);
+  if (!menu) {
+    res.status(404);
+    throw new Error("No menu found");
+  }
+  res.status(200);
+  res.send(menu);
+});
+
 const updateRatio = asyncHandler(async (req, res) => {
   const { ratio, id } = req.body;
   if (!ratio || !id) {
@@ -97,4 +112,5 @@ module.exports = {
   deleteMenu,
   updateRatio,
   updatePricePerPerson,
+  getMenuById,
 };
