@@ -12,6 +12,9 @@ import {
   UPDATE_RATIO_REQUEST,
   UPDATE_RATIO_SUCCESS,
   UPDATE_RATIO_FAIL,
+  UPDATE_PRICEPERPERSON_REQUEST,
+  UPDATE_PRICEPERPERSON_SUCCESS,
+  UPDATE_PRICEPERPERSON_FAIL,
 } from "../constants/menuConstants";
 
 export const addMenu = (info) => async (dispatch, getState) => {
@@ -116,6 +119,34 @@ export const updateMenuRatio = (id, ratio) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: UPDATE_RATIO_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateMenuPricePerPerson = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: UPDATE_PRICEPERPERSON_REQUEST });
+    const {
+      userLogin: {
+        userInfo: { token },
+      },
+    } = getState();
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+
+    await httpService.put("/api/menus/updatePricePerPerson", { id }, config);
+    dispatch({ type: UPDATE_PRICEPERPERSON_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PRICEPERPERSON_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

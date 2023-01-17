@@ -18,6 +18,7 @@ export const Input = ({
           name={name}
           isInvalid={error}
         >
+          <option>Select Item</option>
           {options}
         </Form.Select>
       ) : (

@@ -10,11 +10,12 @@ const createMenuItem = asyncHandler(async (req, res) => {
     throw new Error("Insufficient values provided");
   }
   const menu = await Menu.findById(menu_id);
-  const item = await Item.findById(item_id);
   if (!menu) {
     res.status(400);
     throw new Error("No matching menu found");
   }
+
+  const item = await Item.findById(item_id);
   if (!item) {
     res.status(400);
     throw new Error("No matching item found");
@@ -34,4 +35,15 @@ const createMenuItem = asyncHandler(async (req, res) => {
   res.send(menu_item);
 });
 
-module.exports = { createMenuItem };
+const getMenuItemsByMenuId = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    res.status(400);
+    throw new Error("Insufficient values provided");
+  }
+  const associated_items = await Menu_Item.find({ menu_id: id });
+  res.status(200);
+  res.send(associated_items);
+});
+
+module.exports = { createMenuItem, getMenuItemsByMenuId };

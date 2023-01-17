@@ -1,5 +1,6 @@
 const Menu = require("../models/menu");
 const Menu_Item = require("../models/menu_item");
+const Item = require("../models/item");
 const asyncHandler = require("express-async-handler");
 
 const createMenu = asyncHandler(async (req, res) => {
@@ -40,18 +41,34 @@ const updateRatio = asyncHandler(async (req, res) => {
     throw new Error("Insufficient values provided");
   }
   const menu = await Menu.findById(id);
+
   if (!menu) {
     res.status(400);
     throw new Error("Unable to find the menu");
   }
   menu.ratio = ratio;
+
+  const menu_items = await Menu_Item.find({ menu_id: id });
+
+  if (menu_items && menu_items.length) {
+    for (let menu_item of menu_items) {
+      const item = await Item.findById(menu_item.item_id);
+      menu_item.item_per_person = menu_item.item_quantity / menu.ratio;
+      menu_item.price_per_person =
+        (menu_item.item_quantity / menu.ratio) * item.price;
+      menu_item.save();
+    }
+  }
+
   await menu.save();
+
   res.status(200);
   res.send("Ratio was updated successfully");
 });
 
 const updatePricePerPerson = asyncHandler(async (req, res) => {
   const { id } = req.body;
+  console.log(id);
   if (!id) {
     res.status(400);
     throw new Error("Insufficient values provided");
@@ -63,22 +80,11 @@ const updatePricePerPerson = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Unable to find the menu");
   }
-  if (!menu_items.length || !menu_items.price_per_person) {
-    menu.price_per_person = 0;
-    await menu.save();
-    res.status(200);
-    res.send("Updated");
-  }
-  if (menu_items.price_per_person) {
-    menu.price_per_person = menu_items.price.per.person;
-    await menu.save();
-    res.status(200);
-    res.send("Updated");
-  }
-  const totalPricePerPerson = menu_items.reduce((acc, item) => {
-    acc + item.price_per_person;
-  }, 0);
-  menu.price_per_person = totalPricePerPerson;
+
+  menu.price_per_person = menu_items.reduce(
+    (acc, item) => acc + item.price_per_person,
+    0
+  );
   await menu.save();
   res.status(200);
   res.send("Updated");

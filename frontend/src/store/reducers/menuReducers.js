@@ -11,6 +11,9 @@ import {
   UPDATE_RATIO_REQUEST,
   UPDATE_RATIO_SUCCESS,
   UPDATE_RATIO_FAIL,
+  UPDATE_PRICEPERPERSON_REQUEST,
+  UPDATE_PRICEPERPERSON_SUCCESS,
+  UPDATE_PRICEPERPERSON_FAIL,
 } from "../constants/menuConstants";
 
 export const addMenuReducer = (state = {}, action) => {
@@ -59,6 +62,19 @@ export const updateRatioReducer = (state = {}, action) => {
     case UPDATE_RATIO_SUCCESS:
       return { loading: false, success: true };
     case UPDATE_RATIO_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const updatePricePerPersonReducer = (state = {}, action) => {
+  switch (action.type) {
+    case UPDATE_PRICEPERPERSON_REQUEST:
+      return { loading: true };
+    case UPDATE_PRICEPERPERSON_SUCCESS:
+      return { loading: false, success: true };
+    case UPDATE_PRICEPERPERSON_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

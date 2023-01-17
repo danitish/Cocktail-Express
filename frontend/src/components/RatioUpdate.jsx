@@ -15,14 +15,15 @@ import { toastifySuccess } from "../utils/toastify";
 
 const RatioUpdate = ({ menu }) => {
   const [toggleRatioForm, setToggleRatioForm] = useState(false);
-  const [customError, setCustomError] = useState("");
 
   const dispatch = useDispatch();
   const { loading, success, error } = useSelector((state) => state.updateRatio);
 
   useEffect(() => {
     if (success) {
-      toastifySuccess("Ratio updated, refresh to see new value");
+      toastifySuccess(
+        "Ratio updated, refresh to see new ratio and updated prices"
+      );
     }
   }, [dispatch, success]);
 
@@ -32,15 +33,10 @@ const RatioUpdate = ({ menu }) => {
       ratio: "",
     },
     validate: validateFormikWithJoi({
-      ratio: Joi.string().required().label("Ratio"),
+      ratio: Joi.number().required().label("Ratio"),
     }),
     onSubmit(values) {
-      if (isNaN(Number(values.ratio))) {
-        setCustomError("Invalid input, numbers only");
-        return;
-      }
       dispatch(updateMenuRatio(menu._id, values.ratio));
-      setCustomError("");
     },
   });
   return (
@@ -53,7 +49,6 @@ const RatioUpdate = ({ menu }) => {
       />
       {toggleRatioForm && (
         <FormContainer>
-          {customError && <Message>{customError}</Message>}
           {error && <Message>{error}</Message>}
           {loading && <Loader />}
           <Form
@@ -62,6 +57,7 @@ const RatioUpdate = ({ menu }) => {
             className="border border-dark rounded p-4"
           >
             <Input
+              type="number"
               label="Ratio"
               name="ratio"
               placeholder={`Current - ${menu.ratio}`}

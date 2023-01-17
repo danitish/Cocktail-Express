@@ -10,7 +10,12 @@ import {
   myMenusReducer,
   menuDetailsReducer,
   updateRatioReducer,
+  updatePricePerPersonReducer,
 } from "./reducers/menuReducers";
+import {
+  addMenuItemReducer,
+  menuItemsReducer,
+} from "./reducers/menuItemReducers";
 
 const reducer = {
   userLogin: userLoginReducer,
@@ -21,6 +26,9 @@ const reducer = {
   myMenus: myMenusReducer,
   menuDetails: menuDetailsReducer,
   updateRatio: updateRatioReducer,
+  updatePricePerPerson: updatePricePerPersonReducer,
+  addMenuItem: addMenuItemReducer,
+  menuItems: menuItemsReducer,
 };
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

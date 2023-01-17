@@ -11,7 +11,7 @@ const Header = () => {
     { name: "Items", url: "/items" },
   ];
   return (
-    <Navbar bg="info" expand="sm">
+    <Navbar bg="primary" expand="sm">
       <Container fluid>
         <Navbar.Toggle aria-controls="basic-navbar-nav" className="me-2" />
         <LinkContainer to="/">

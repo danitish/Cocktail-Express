@@ -92,6 +92,7 @@ const Menus = () => {
             <MenuCard
               name={menu.name}
               description={menu.description}
+              price_per_person={menu.price_per_person}
               id={menu._id}
               key={menu._id}
             />
