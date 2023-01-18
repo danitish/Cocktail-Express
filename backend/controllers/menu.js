@@ -59,7 +59,6 @@ const updateRatio = asyncHandler(async (req, res) => {
       menu_item.save();
     }
   }
-
   await menu.save();
 
   res.status(200);

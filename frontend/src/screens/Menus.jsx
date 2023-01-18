@@ -10,7 +10,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import Joi from "joi";
 import validateFormikWithJoi from "../utils/validateFormikWithJoi";
-import { addMenu, getMyMenus } from "../store/actions/menuActions";
+import {
+  addMenu,
+  getMyMenus,
+  updateMenuPricePerPerson,
+} from "../store/actions/menuActions";
 import { useEffect } from "react";
 import { toastifySuccess } from "../utils/toastify";
 
@@ -92,7 +96,7 @@ const Menus = () => {
             <MenuCard
               name={menu.name}
               description={menu.description}
-              price_per_person={menu.price_per_person}
+              price_per_person={menu.price_per_person.toFixed(2)}
               id={menu._id}
               key={menu._id}
             />

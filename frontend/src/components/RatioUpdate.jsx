@@ -13,7 +13,7 @@ import { updateMenuRatio } from "../store/actions/menuActions";
 import { useEffect } from "react";
 import { toastifySuccess } from "../utils/toastify";
 
-const RatioUpdate = ({ menu }) => {
+const RatioUpdate = ({ menu, menuPageStateHandler, menuPageState }) => {
   const [toggleRatioForm, setToggleRatioForm] = useState(false);
 
   const dispatch = useDispatch();
@@ -24,6 +24,7 @@ const RatioUpdate = ({ menu }) => {
       toastifySuccess(
         "Ratio updated, refresh to see new ratio and updated prices"
       );
+      menuPageStateHandler(!menuPageState);
     }
   }, [dispatch, success]);
 
@@ -60,7 +61,7 @@ const RatioUpdate = ({ menu }) => {
               type="number"
               label="Ratio"
               name="ratio"
-              placeholder={`Current - ${menu.ratio}`}
+              placeholder={`Current - ${menu?.ratio}`}
               error={form.touched.ratio && form.errors.ratio}
               {...form.getFieldProps("ratio")}
             />

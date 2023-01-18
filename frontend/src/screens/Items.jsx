@@ -11,6 +11,10 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import FormToggler from "../components/FormToggler";
 import { toastifySuccess } from "../utils/toastify";
+import {
+  getMyMenus,
+  updateMenuPricePerPerson,
+} from "../store/actions/menuActions";
 
 const Items = () => {
   const dispatch = useDispatch();
@@ -22,15 +26,27 @@ const Items = () => {
   const { error: removeItemError, success: removeItemSuccess } = useSelector(
     (state) => state.removeItem
   );
+  const {
+    loading: myMenusLoading,
+    menus,
+    error: myMenusError,
+  } = useSelector((state) => state.myMenus);
 
   const [toggleAddItemForm, setToggleAddItemForm] = useState(false);
 
   useEffect(() => {
     dispatch(getMyItems());
+    dispatch(getMyMenus());
     if (addItemSuccess) {
       form.values.name = "";
       form.values.price = "";
       toastifySuccess("Item added successfully");
+    }
+
+    if (removeItemSuccess && menus) {
+      for (let menu of menus) {
+        dispatch(updateMenuPricePerPerson(menu._id));
+      }
     }
   }, [dispatch, addItemSuccess, removeItemSuccess]);
 

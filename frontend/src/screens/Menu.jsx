@@ -34,16 +34,21 @@ const Menu = () => {
   } = useSelector((state) => state.menuItems);
 
   const [toggleAddItemForm, setToggleAddItemForm] = useState(false);
+  const [ratioUpdated, setRatioUpdate] = useState(false);
 
   useEffect(() => {
     dispatch(getMyItems());
     dispatch(getMenuDetails(id));
     dispatch(getMenuItems(id));
+
     if (success) {
       toastifySuccess("Added successfully");
       dispatch(updateMenuPricePerPerson(id));
     }
-  }, [dispatch, success, id]);
+    if (ratioUpdated) {
+      dispatch(updateMenuPricePerPerson(id));
+    }
+  }, [dispatch, success, id, ratioUpdated]);
 
   const form = useFormik({
     initialValues: {
@@ -69,7 +74,11 @@ const Menu = () => {
         <Breadcrumb.Item href="/menus">Menus</Breadcrumb.Item>
         <Breadcrumb.Item active>{menu ? menu.name : id}</Breadcrumb.Item>
       </Breadcrumb>
-      <RatioUpdate menu={menu} />
+      <RatioUpdate
+        menu={menu}
+        menuPageState={ratioUpdated}
+        menuPageStateHandler={setRatioUpdate}
+      />
       <hr />
       <FormToggler
         desc="Add Item"
