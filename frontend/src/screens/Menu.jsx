@@ -142,7 +142,7 @@ const Menu = () => {
                 <tr key={menuItem._id}>
                   <td>
                     {items &&
-                      items.find((item) => item._id === menuItem.item_id).name}
+                      items.find((item) => item._id === menuItem.item_id)?.name}
                   </td>
                   <td>{menuItem.item_quantity}</td>
                   <td>₪ {menuItem.price_per_person.toFixed(2)}</td>
@@ -154,6 +154,12 @@ const Menu = () => {
         </>
       ) : (
         <h4 className="mt-5">No items added yet ...</h4>
+      )}
+      {menuItems && menuItems.length > 0 && (
+        <h5 className="mt-5">
+          <span className="me-1">Total price per person:</span> ₪
+          {menuItems.reduce((acc, item) => acc + item.price_per_person, 0)}
+        </h5>
       )}
     </>
   );

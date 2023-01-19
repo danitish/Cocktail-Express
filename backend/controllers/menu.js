@@ -67,7 +67,6 @@ const updateRatio = asyncHandler(async (req, res) => {
 
 const updatePricePerPerson = asyncHandler(async (req, res) => {
   const { id } = req.body;
-  console.log(id);
   if (!id) {
     res.status(400);
     throw new Error("Insufficient values provided");

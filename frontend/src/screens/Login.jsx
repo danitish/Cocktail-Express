@@ -1,3 +1,4 @@
+import "../style/login.css";
 import Input from "../common/Input";
 import FormContainer from "../components/FormContainer";
 import { Form, Button } from "react-bootstrap";
@@ -45,11 +46,11 @@ const Login = () => {
   });
 
   return (
-    <div className="login-stage d-flex align-items-center flex-column">
+    <div className="login-stage d-flex align-items-center flex-column min-vh-100 gradient-background">
       <div className="logo fade-in-image mt-4 mb-4">
         <img
-          width="250px"
-          src="./logo.png"
+          width="270px"
+          src="./logonobg.png"
           alt="Cocktail Express Official Logo"
         />
       </div>

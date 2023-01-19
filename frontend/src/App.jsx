@@ -21,53 +21,58 @@ function App() {
     <div className="App d-flex flex-column min-vh-100">
       <ToastContainer />
       {userInfo && <Header />}
-      <main className="flex-fill py-3">
-        <Container>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <Home />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/login" element={<Login />} />
-            <Route
-              path="/logout"
-              element={
-                <ProtectedRoute>
-                  <Logout />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/items"
-              element={
-                <ProtectedRoute>
-                  <Items />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/menus"
-              element={
-                <ProtectedRoute>
-                  <Menus />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/menus/:id"
-              element={
-                <ProtectedRoute>
-                  <Menu />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </Container>
-      </main>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+      </Routes>
+      {userInfo && (
+        <main className="flex-fill py-3">
+          <Container>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <Home />
+                  </ProtectedRoute>
+                }
+              />
+              {/* <Route path="/login" element={<Login />} /> */}
+              <Route
+                path="/logout"
+                element={
+                  <ProtectedRoute>
+                    <Logout />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/items"
+                element={
+                  <ProtectedRoute>
+                    <Items />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/menus"
+                element={
+                  <ProtectedRoute>
+                    <Menus />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/menus/:id"
+                element={
+                  <ProtectedRoute>
+                    <Menu />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </Container>
+        </main>
+      )}
       {userInfo && <Footer />}
     </div>
   );

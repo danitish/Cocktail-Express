@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const MenuCard = ({ name, description, id, price_per_person }) => {
   return (
-    <Col sm={12} md={4} lg={3} className="mb-3 mb-md-0">
+    <Col sm={12} md={4} lg={3} className="mb-3 mb-md-0 mt-0 mt-lg-3">
       <Card className="h-100 shadow-lg">
         <Card.Header></Card.Header>
         <Card.Body className="h-100 d-flex flex-column">

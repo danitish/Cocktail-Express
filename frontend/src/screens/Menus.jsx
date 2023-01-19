@@ -80,14 +80,14 @@ const Menus = () => {
               error={form.touched.description && form.errors.description}
               {...form.getFieldProps("description")}
             />
-            <Button type="submit" className="mt-4">
+            <Button disabled={!form.isValid} type="submit" className="mt-4">
               Create Menu
             </Button>
           </Form>
         </FormContainer>
       )}
       <hr />
-      <h3 className="mt-5 mb-4">My Menus</h3>
+      <h3 className="my-3">My Menus</h3>
       <Row>
         {myMenusLoading && <Loader />}
         {myMenusError && <Message>{myMenusError}</Message>}

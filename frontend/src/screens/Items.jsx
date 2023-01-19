@@ -7,6 +7,7 @@ import FormContainer from "../components/FormContainer";
 import { useState, useEffect } from "react";
 import { getMyItems, addItem, removeItem } from "../store/actions/itemActions";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import FormToggler from "../components/FormToggler";
@@ -15,9 +16,11 @@ import {
   getMyMenus,
   updateMenuPricePerPerson,
 } from "../store/actions/menuActions";
+import { popup } from "../utils/popups";
 
 const Items = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { loading, items, error } = useSelector((state) => state.myItems);
   const { error: addItemError, success: addItemSuccess } = useSelector(
@@ -26,11 +29,7 @@ const Items = () => {
   const { error: removeItemError, success: removeItemSuccess } = useSelector(
     (state) => state.removeItem
   );
-  const {
-    loading: myMenusLoading,
-    menus,
-    error: myMenusError,
-  } = useSelector((state) => state.myMenus);
+  const { menus } = useSelector((state) => state.myMenus);
 
   const [toggleAddItemForm, setToggleAddItemForm] = useState(false);
 
@@ -66,7 +65,15 @@ const Items = () => {
   });
 
   const deleteItemHandler = (id) => {
-    dispatch(removeItem(id));
+    popup(
+      "Delete an item",
+      "Are you sure you want to delete the item?",
+      () => {
+        dispatch(removeItem(id));
+        toastifySuccess("Item removed");
+      },
+      () => navigate("/items")
+    );
   };
 
   return (
@@ -92,12 +99,13 @@ const Items = () => {
               {...form.getFieldProps("name")}
             />
             <Input
+              type="number"
               name="price"
               label="Item price"
               error={form.touched.price && form.errors.price}
               {...form.getFieldProps("price")}
             />
-            <Button type="submit" className="my-3">
+            <Button disabled={!form.isValid} type="submit" className="my-3">
               Add Item
             </Button>
           </Form>
