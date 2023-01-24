@@ -11,6 +11,7 @@ import {
   menuDetailsReducer,
   updateRatioReducer,
   updatePricePerPersonReducer,
+  deleteMenuReducer,
 } from "./reducers/menuReducers";
 import {
   addMenuItemReducer,
@@ -23,6 +24,7 @@ const reducer = {
   myItems: myItemsReducer,
   removeItem: removeItemReducer,
   addMenu: addMenuReducer,
+  deleteMenu: deleteMenuReducer,
   myMenus: myMenusReducer,
   menuDetails: menuDetailsReducer,
   updateRatio: updateRatioReducer,

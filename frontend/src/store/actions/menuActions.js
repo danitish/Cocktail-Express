@@ -15,6 +15,9 @@ import {
   UPDATE_PRICEPERPERSON_REQUEST,
   UPDATE_PRICEPERPERSON_SUCCESS,
   UPDATE_PRICEPERPERSON_FAIL,
+  DELETE_MENU_REQUEST,
+  DELETE_MENU_SUCCESS,
+  DELETE_MENU_FAIL,
 } from "../constants/menuConstants";
 
 export const addMenu = (info) => async (dispatch, getState) => {
@@ -147,6 +150,33 @@ export const updateMenuPricePerPerson = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: UPDATE_PRICEPERPERSON_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const deleteMenu = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: DELETE_MENU_REQUEST });
+    const {
+      userLogin: {
+        userInfo: { token },
+      },
+    } = getState();
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+
+    await httpService.delete(`/api/menus/${id}`, config);
+    dispatch({ type: DELETE_MENU_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: DELETE_MENU_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

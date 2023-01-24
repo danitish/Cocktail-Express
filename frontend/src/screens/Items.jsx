@@ -57,7 +57,7 @@ const Items = () => {
     },
     validate: validateFormikWithJoi({
       name: Joi.string().required().label("Item name"),
-      price: Joi.string().required().label("Item price"),
+      price: Joi.number().required().label("Item price"),
     }),
     onSubmit(values) {
       dispatch(addItem(values));

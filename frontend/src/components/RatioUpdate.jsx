@@ -40,12 +40,16 @@ const RatioUpdate = ({ menu, menuPageStateHandler }) => {
   });
   return (
     <div className="mb-4">
-      <FormToggler
-        desc="Edit ratio"
-        state={toggleRatioForm}
-        stateHandler={setToggleRatioForm}
-        editIcon
-      />
+      <div className="d-flex align-items-center">
+        <FormToggler
+          desc="Edit ratio"
+          state={toggleRatioForm}
+          stateHandler={setToggleRatioForm}
+          editIcon
+        />
+        <span>Ratio allows you to calculate the price per person value</span>
+      </div>
+
       {toggleRatioForm && (
         <FormContainer>
           {error && <Message>{error}</Message>}

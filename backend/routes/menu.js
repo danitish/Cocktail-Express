@@ -19,5 +19,5 @@ router
 
 router.put("/updateRatio", auth, updateRatio);
 router.put("/updatePricePerPerson", auth, updatePricePerPerson);
-router.get("/:id", auth, getMenuById);
+router.route("/:id").get(auth, getMenuById).delete(auth, deleteMenu);
 module.exports = router;

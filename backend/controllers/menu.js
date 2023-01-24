@@ -99,7 +99,7 @@ const getMyMenus = asyncHandler(async (req, res) => {
 });
 
 const deleteMenu = asyncHandler(async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
   const menu = await Menu.findById(id);
   if (!menu) {
     res.status(404);

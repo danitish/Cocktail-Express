@@ -14,6 +14,9 @@ import {
   UPDATE_PRICEPERPERSON_REQUEST,
   UPDATE_PRICEPERPERSON_SUCCESS,
   UPDATE_PRICEPERPERSON_FAIL,
+  DELETE_MENU_REQUEST,
+  DELETE_MENU_SUCCESS,
+  DELETE_MENU_FAIL,
 } from "../constants/menuConstants";
 
 export const addMenuReducer = (state = {}, action) => {
@@ -75,6 +78,19 @@ export const updatePricePerPersonReducer = (state = {}, action) => {
     case UPDATE_PRICEPERPERSON_SUCCESS:
       return { loading: false, success: true };
     case UPDATE_PRICEPERPERSON_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const deleteMenuReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_MENU_REQUEST:
+      return { loading: true };
+    case DELETE_MENU_SUCCESS:
+      return { loading: false, success: true };
+    case DELETE_MENU_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

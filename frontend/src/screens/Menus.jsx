@@ -10,11 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import Joi from "joi";
 import validateFormikWithJoi from "../utils/validateFormikWithJoi";
-import {
-  addMenu,
-  getMyMenus,
-  updateMenuPricePerPerson,
-} from "../store/actions/menuActions";
+import { addMenu, getMyMenus, deleteMenu } from "../store/actions/menuActions";
 import { useEffect } from "react";
 import { toastifySuccess } from "../utils/toastify";
 
@@ -22,6 +18,11 @@ const Menus = () => {
   const [toggleMenuForm, setToggleMenuForm] = useState(false);
   const dispatch = useDispatch();
   const { loading, success, error } = useSelector((state) => state.addMenu);
+  const {
+    loading: deleteMenuLoading,
+    success: deleteMenuSuccess,
+    error: deleteMenuError,
+  } = useSelector((state) => state.deleteMenu);
   const {
     loading: myMenusLoading,
     menus,
@@ -50,7 +51,10 @@ const Menus = () => {
       form.values.description = "";
       toastifySuccess("Menu added successfully");
     }
-  }, [dispatch, success]);
+    if (deleteMenuSuccess) {
+      toastifySuccess("Menu deleted successfully");
+    }
+  }, [dispatch, success, deleteMenuSuccess]);
   return (
     <>
       <FormToggler
@@ -91,6 +95,8 @@ const Menus = () => {
       <Row>
         {myMenusLoading && <Loader />}
         {myMenusError && <Message>{myMenusError}</Message>}
+        {deleteMenuLoading && <Loader />}
+        {deleteMenuError && <Message>{deleteMenuError}</Message>}
         {menus ? (
           menus.map((menu) => (
             <MenuCard
@@ -99,6 +105,7 @@ const Menus = () => {
               price_per_person={menu.price_per_person.toFixed(2)}
               id={menu._id}
               key={menu._id}
+              deleteMenuHandler={deleteMenu}
             />
           ))
         ) : (

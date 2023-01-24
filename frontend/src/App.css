@@ -11,3 +11,9 @@
     opacity: 1;
   }
 }
+
+.breadcrumb-non-active a {
+  text-decoration: none !important;
+  font-weight: bold;
+  color: #454545;
+}

@@ -71,7 +71,9 @@ const Menu = () => {
   return (
     <>
       <Breadcrumb>
-        <Breadcrumb.Item href="/menus">Menus</Breadcrumb.Item>
+        <Breadcrumb.Item className="breadcrumb-non-active" href="/menus">
+          Menus
+        </Breadcrumb.Item>
         <Breadcrumb.Item active>{menu ? menu.name : id}</Breadcrumb.Item>
       </Breadcrumb>
       <RatioUpdate
