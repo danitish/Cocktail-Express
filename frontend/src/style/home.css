@@ -1,0 +1,18 @@
+header h4 {
+  letter-spacing: 1px;
+}
+
+.my-data {
+  background-color: #f6eec4;
+  box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, 0.75);
+}
+
+.vl {
+  height: 80px;
+  margin-left: 30px;
+  border-left: 6px dotted black;
+}
+
+.my-data-title {
+  line-height: 2;
+}

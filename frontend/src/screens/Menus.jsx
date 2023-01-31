@@ -45,7 +45,11 @@ const Menus = () => {
   });
 
   useEffect(() => {
-    dispatch(getMyMenus());
+    const init = () => {
+      dispatch(getMyMenus());
+    };
+    init();
+
     if (success) {
       form.values.name = "";
       form.values.description = "";

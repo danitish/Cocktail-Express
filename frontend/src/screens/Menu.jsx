@@ -37,9 +37,12 @@ const Menu = () => {
   const [ratioUpdated, setRatioUpdate] = useState(false);
 
   useEffect(() => {
-    dispatch(getMyItems());
-    dispatch(getMenuDetails(id));
-    dispatch(getMenuItems(id));
+    const init = () => {
+      dispatch(getMyItems());
+      dispatch(getMenuDetails(id));
+      dispatch(getMenuItems(id));
+    };
+    init();
 
     if (success) {
       toastifySuccess("Added successfully");
