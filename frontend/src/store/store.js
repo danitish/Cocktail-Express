@@ -17,7 +17,7 @@ import {
   addMenuItemReducer,
   menuItemsReducer,
 } from "./reducers/menuItemReducers";
-import { myEventsReducer } from "./reducers/eventReducers";
+import { myEventsReducer, addEventReducer } from "./reducers/eventReducers";
 
 const reducer = {
   userLogin: userLoginReducer,
@@ -33,6 +33,7 @@ const reducer = {
   addMenuItem: addMenuItemReducer,
   menuItems: menuItemsReducer,
   myEvents: myEventsReducer,
+  addEvent: addEventReducer,
 };
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

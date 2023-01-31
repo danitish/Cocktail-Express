@@ -7,12 +7,18 @@ const schema = new mongoose.Schema(
       ref: "user",
       required: true,
     },
+    menu_id: {
+      type: mongoose.Types.ObjectId,
+      ref: "menu",
+      required: true,
+      default: null,
+    },
     event_name: {
       type: String,
       required: true,
     },
     event_date: {
-      type: String,
+      type: Date,
       required: true,
     },
     estimated_income: {

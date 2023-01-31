@@ -63,7 +63,7 @@ const Menu = () => {
       item_quantity: Joi.number().required().label("Quantity"),
     }),
     onSubmit(values) {
-      if (values.item === "Select Item") {
+      if (values.item === "Choose one") {
         toastifyError("No such item exists");
         return;
       }

@@ -26,8 +26,8 @@ export const addItem = (item) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await httpService.post("/api/items", item, config);
-    dispatch({ type: ADD_ITEM_SUCCESS, payload: data });
+    await httpService.post("/api/items", item, config);
+    dispatch({ type: ADD_ITEM_SUCCESS });
   } catch (error) {
     dispatch({
       type: ADD_ITEM_FAIL,

@@ -113,7 +113,7 @@ const Menus = () => {
             />
           ))
         ) : (
-          <h5>No menus added yet</h5>
+          <h5>No menus found</h5>
         )}
       </Row>
     </>

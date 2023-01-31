@@ -12,19 +12,22 @@ import Logout from "./screens/Logout";
 import Items from "./screens/Items";
 import Menus from "./screens/Menus";
 import Menu from "./screens/Menu";
-import { useNavigate } from "react-router-dom";
+import Events from "./screens/Events";
 
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
 function App() {
   const { userInfo } = useSelector((state) => state.userLogin);
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
     }
   }, [userInfo, navigate]);
+
   return (
     <div className="App d-flex flex-column min-vh-100">
       <ToastContainer />
@@ -73,6 +76,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Menu />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/events"
+                element={
+                  <ProtectedRoute>
+                    <Events />
                   </ProtectedRoute>
                 }
               />

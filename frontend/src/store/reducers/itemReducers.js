@@ -15,7 +15,7 @@ export const addItemReducer = (state = {}, action) => {
     case ADD_ITEM_REQUEST:
       return { loading: true, success: false };
     case ADD_ITEM_SUCCESS:
-      return { loading: false, success: true, item: action.payload };
+      return { loading: false, success: true };
     case ADD_ITEM_FAIL:
       return { loading: false, error: action.payload };
 

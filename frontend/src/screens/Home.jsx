@@ -73,7 +73,7 @@ const Home = () => {
         <div className="vl d-none d-md-block"></div>
         <div className="data d-flex flex-fill justify-content-between justify-content-md-around">
           {data_section_info.map((data) => (
-            <>
+            <div key={data.url}>
               <div className="d-flex flex-column justify-content-center align-items-center gap-2 fw-bold">
                 <Link to={data.url} style={{ color: "inherit" }}>
                   <i className={data.icon + " mb-2"}></i>
@@ -81,7 +81,7 @@ const Home = () => {
                 <span>{data.name}</span>
                 <span>{data.data_length}</span>
               </div>
-            </>
+            </div>
           ))}
         </div>
       </div>
