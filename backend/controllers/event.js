@@ -2,12 +2,14 @@ const Event = require("../models/event");
 const asyncHandler = require("express-async-handler");
 
 const createEvent = asyncHandler(async (req, res) => {
-  const { event_name, event_date, estimated_income, menu_id } = req.body;
+  const { event_name, event_date, estimated_income, menu_id, attendance } =
+    req.body;
   const event = await Event.create({
     event_name,
     event_date,
     estimated_income,
     menu_id,
+    attendance,
     user_id: req.user._id,
   });
   if (!event) {

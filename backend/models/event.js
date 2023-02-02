@@ -25,6 +25,10 @@ const schema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    attendance: {
+      type: Number,
+      required: true,
+    },
   },
   {
     timestamps: true,

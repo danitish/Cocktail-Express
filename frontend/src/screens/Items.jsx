@@ -149,7 +149,7 @@ const Items = () => {
           </Table>
         </>
       ) : (
-        <h4 className="mt-5">No items added yet ...</h4>
+        <h4 className="mt-5">No items found ...</h4>
       )}
     </>
   );

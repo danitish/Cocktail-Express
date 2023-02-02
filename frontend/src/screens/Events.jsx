@@ -39,6 +39,7 @@ const Events = () => {
       toastifySuccess("Event added!");
       form.values.event_date = "";
       form.values.estimated_income = "";
+      form.values.attendance = "";
       form.values.event_name = "";
       form.values.menu_id = "";
     }
@@ -49,14 +50,16 @@ const Events = () => {
     initialValues: {
       event_name: "",
       event_date: "",
+      attendance: "",
       estimated_income: "",
       menu_id: "",
     },
     validate: validateFormikWithJoi({
       event_name: Joi.string().required().label("Event name"),
       event_date: Joi.date().required().label("Event date"),
+      attendance: Joi.number().required().label("Attendance"),
       estimated_income: Joi.string().required().label("Estimated income"),
-      menu_id: Joi.string().label("Menu"),
+      menu_id: Joi.string().label("Menu").required(),
     }),
     onSubmit(values) {
       if (values.menu_id === "Choose one") {
@@ -96,6 +99,13 @@ const Events = () => {
               {...form.getFieldProps("event_date")}
             />
             <Input
+              type="number"
+              name="attendance"
+              label="Attendance"
+              error={form.touched.attendance && form.errors.attendance}
+              {...form.getFieldProps("attendance")}
+            />
+            <Input
               selectInput
               as="select"
               name="menu"
@@ -124,22 +134,30 @@ const Events = () => {
         </FormContainer>
       )}
       <hr />
-      <h3 className="my-3">My Events</h3>
+
       <Row>
         {myEventsError && <Message>{myEventsError}</Message>}
         {myEventsLoading && <Loader />}
-        {events ? (
-          events.map((event) => (
-            <EventCard
-              key={event._id}
-              name={event.event_name}
-              date={event.event_date}
-              income={event.estimated_income}
-              menu_id={event.menu_id}
-            />
-          ))
+        {events && events.length ? (
+          <>
+            <h3 className="my-3">My Events</h3>
+            {events.map((event) => (
+              <EventCard
+                key={event._id}
+                name={event.event_name}
+                attendance={event.attendance}
+                date={event.event_date}
+                income={event.estimated_income}
+                menu_name={
+                  menus
+                    ? menus.find((menu) => menu._id === event.menu_id).name
+                    : event.menu_id
+                }
+              />
+            ))}
+          </>
         ) : (
-          <h5>No events found</h5>
+          <h5 className="mt-5">No events found ...</h5>
         )}
       </Row>
     </>
