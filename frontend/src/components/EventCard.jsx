@@ -1,6 +1,7 @@
 import { Col, Card, Button, ListGroup } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-const EventCard = ({ name, date, income, menu_name, attendance }) => {
+const EventCard = ({ name, date, income, menu_name, attendance, id }) => {
   const event_date = new Date(date).toLocaleDateString("he-IL");
   const event_time = new Date(date).toLocaleTimeString("he-IL", {
     timeStyle: "short",
@@ -28,9 +29,11 @@ const EventCard = ({ name, date, income, menu_name, attendance }) => {
               <span className="fw-bold">{income.toLocaleString("en-US")}</span>
             </ListGroup.Item>
           </ListGroup>
-          <Button className="mt-2" variant="primary">
-            Go to event
-          </Button>
+          <Link to={`/events/${id}`}>
+            <Button className="mt-2" variant="primary">
+              Go to event
+            </Button>
+          </Link>
         </Card.Body>
       </Card>
     </Col>

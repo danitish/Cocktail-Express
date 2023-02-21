@@ -144,6 +144,7 @@ const Events = () => {
             {events.map((event) => (
               <EventCard
                 key={event._id}
+                id={event._id}
                 name={event.event_name}
                 attendance={event.attendance}
                 date={event.event_date}
