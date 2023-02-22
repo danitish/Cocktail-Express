@@ -30,4 +30,17 @@ const myEvents = asyncHandler(async (req, res) => {
   res.send(events);
 });
 
-module.exports = { createEvent, myEvents };
+const getEventById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    throw new Error("Insufficient values provided");
+  }
+  const event = await Event.findById(id).select("-__v");
+  if (!event) {
+    throw new Error("No matching event found");
+  }
+  res.status(200);
+  res.send(event);
+});
+
+module.exports = { createEvent, myEvents, getEventById };

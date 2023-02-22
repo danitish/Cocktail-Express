@@ -2,6 +2,9 @@ import {
   ADD_EVENT_FAIL,
   ADD_EVENT_REQUEST,
   ADD_EVENT_SUCCESS,
+  GET_EVENT_FAIL,
+  GET_EVENT_REQUEST,
+  GET_EVENT_SUCCESS,
   MY_EVENTS_FAIL,
   MY_EVENTS_REQUEST,
   MY_EVENTS_SUCCESS,
@@ -56,6 +59,34 @@ export const addEvent = (info) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ADD_EVENT_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getSingleEvent = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: GET_EVENT_REQUEST });
+    const {
+      userLogin: {
+        userInfo: { token },
+      },
+    } = getState();
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await httpService.get(`/api/events/${id}`, config);
+    dispatch({ type: GET_EVENT_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: GET_EVENT_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
