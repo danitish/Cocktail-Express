@@ -19,7 +19,9 @@ const EventCard = ({ name, date, income, menu_name, attendance, id }) => {
           </Card.Title>
           <ListGroup className="list-group-flush py-2 my-3">
             <ListGroup.Item>
-              <span style={{ letterSpacing: 1 }}>{menu_name}</span>
+              <span style={{ letterSpacing: 1 }}>
+                {menu_name ? menu_name : "No menu"}
+              </span>
             </ListGroup.Item>
             <ListGroup.Item>
               {attendance.toLocaleString("en-US")} people

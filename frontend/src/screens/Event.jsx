@@ -7,7 +7,7 @@ import Loader from "../components/Loader";
 import { Breadcrumb, Table, ListGroup } from "react-bootstrap";
 import { getMenuItems } from "../store/actions/menuItemActions";
 import { getMyItems } from "../store/actions/itemActions";
-import { getMyMenus } from "../store/actions/menuActions";
+import { getMenuDetails, getMyMenus } from "../store/actions/menuActions";
 import { GET_EVENT_RESET } from "../store/constants/eventConstants";
 
 const Event = () => {
@@ -22,7 +22,7 @@ const Event = () => {
 
   const { menuItems } = useSelector((state) => state.menuItems);
   const { items } = useSelector((state) => state.myItems);
-  const { menus } = useSelector((state) => state.myMenus);
+  const { menu: menuDetails } = useSelector((state) => state.menuDetails);
 
   useEffect(() => {
     const init = () => {
@@ -34,6 +34,7 @@ const Event = () => {
     };
     init();
     if (event) {
+      dispatch(getMenuDetails(event.menu_id));
       dispatch(getMenuItems(event.menu_id));
     }
 
@@ -43,6 +44,11 @@ const Event = () => {
       }
     };
   }, [dispatch, id, event]);
+
+  const menuPPPTimesAttendance =
+    menuDetails?.price_per_person * event?.attendance
+      ? menuDetails?.price_per_person * event?.attendance
+      : 0;
 
   return (
     <>
@@ -60,9 +66,7 @@ const Event = () => {
         <>
           <h4 className="mt-5 mb-3">
             <span className="me-2">Menu Items:</span>
-            <span className="h5">
-              ({menus && menus.find((menu) => menu._id === event.menu_id).name})
-            </span>
+            <span className="h5">({menuDetails?.name})</span>
           </h4>
           <Table striped bordered hover responsive className="table-sm">
             <thead>
@@ -103,37 +107,19 @@ const Event = () => {
             <span className="fw-bold">Total cost: </span>
             <span>
               ₪
-              {menuItems &&
-                menuItems
-                  .reduce(
-                    (acc, item) =>
-                      acc + item.price_per_person * event?.attendance,
-                    0
-                  )
-                  .toLocaleString("en-US")}
+              {menuPPPTimesAttendance
+                ? menuPPPTimesAttendance.toLocaleString("en-US")
+                : 0}
             </span>
           </ListGroup.Item>
           <ListGroup.Item>
-            {event?.estimated_income -
-              (menuItems &&
-                menuItems.reduce(
-                  (acc, item) =>
-                    acc + item.price_per_person * event?.attendance,
-                  0
-                )) >
-            0 ? (
+            {event?.estimated_income - menuPPPTimesAttendance > 0 ? (
               <>
                 <span className="fw-bold text-success">Profit: </span>
                 <span>
                   ₪
                   {(
-                    event?.estimated_income -
-                    (menuItems &&
-                      menuItems.reduce(
-                        (acc, item) =>
-                          acc + item.price_per_person * event?.attendance,
-                        0
-                      ))
+                    event?.estimated_income - menuPPPTimesAttendance
                   ).toLocaleString("en-US")}
                 </span>
               </>
@@ -143,15 +129,7 @@ const Event = () => {
                 <span>
                   ₪
                   {
-                    (
-                      event?.estimated_income -
-                      (menuItems &&
-                        menuItems.reduce(
-                          (acc, item) =>
-                            acc + item.price_per_person * event?.attendance,
-                          0
-                        ))
-                    )
+                    (event?.estimated_income - menuPPPTimesAttendance)
                       .toLocaleString("en-US")
                       .split("-")[1]
                   }

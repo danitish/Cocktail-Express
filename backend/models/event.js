@@ -8,9 +8,9 @@ const schema = new mongoose.Schema(
       required: true,
     },
     menu_id: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Types.ObjectId || null,
       ref: "menu",
-      required: true,
+      required: false,
       default: null,
     },
     event_name: {

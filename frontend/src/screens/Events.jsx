@@ -63,8 +63,7 @@ const Events = () => {
     }),
     onSubmit(values) {
       if (values.menu_id === "Choose one") {
-        toastifyError("No such menu exists");
-        return;
+        dispatch(addEvent({ ...values, menu_id: null }));
       }
       dispatch(addEvent(values));
     },
@@ -151,7 +150,7 @@ const Events = () => {
                 income={event.estimated_income}
                 menu_name={
                   menus
-                    ? menus.find((menu) => menu._id === event.menu_id).name
+                    ? menus.find((menu) => menu._id === event.menu_id)?.name
                     : event.menu_id
                 }
               />
