@@ -19,6 +19,7 @@ import { useFormik } from "formik";
 import validateFormikWithJoi from "../utils/validateFormikWithJoi";
 import { toastifyError, toastifySuccess } from "../utils/toastify";
 import { addMenuItem, getMenuItems } from "../store/actions/menuItemActions";
+import Meta from "../components/Meta";
 
 const Menu = () => {
   const { id } = useParams();
@@ -73,6 +74,7 @@ const Menu = () => {
 
   return (
     <>
+      <Meta title={`CE - ${menu ? menu.name : "Menu"}`} />
       <Breadcrumb>
         <Breadcrumb.Item className="breadcrumb-non-active" href="/menus">
           Menus

@@ -17,6 +17,7 @@ import {
   updateMenuPricePerPerson,
 } from "../store/actions/menuActions";
 import { popup } from "../utils/popups";
+import Meta from "../components/Meta";
 
 const Items = () => {
   const dispatch = useDispatch();
@@ -78,6 +79,7 @@ const Items = () => {
 
   return (
     <>
+      <Meta title="CE - My Items" />
       <FormToggler
         desc="Add an item"
         state={toggleAddItemForm}

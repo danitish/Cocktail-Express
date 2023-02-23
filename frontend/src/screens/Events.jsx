@@ -6,19 +6,23 @@ import Input from "../common/Input";
 import { useFormik } from "formik";
 import Joi from "joi";
 import validateFormikWithJoi from "../utils/validateFormikWithJoi";
-import { toastifySuccess, toastifyError } from "../utils/toastify";
+import { toastifySuccess } from "../utils/toastify";
 import { useEffect } from "react";
 import { getMyMenus } from "../store/actions/menuActions";
 import { useDispatch, useSelector } from "react-redux";
-import { addEvent, myEvents } from "../store/actions/eventActions";
+import { addEvent, myEvents, deleteEvent } from "../store/actions/eventActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import EventCard from "../components/EventCard";
+import { popup } from "../utils/popups";
+import { useNavigate } from "react-router-dom";
+import Meta from "../components/Meta";
 
 const Events = () => {
   const [toggleEventForm, setToggleEventForm] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { menus } = useSelector((state) => state.myMenus);
   const { loading, success, error } = useSelector((state) => state.addEvent);
@@ -27,6 +31,11 @@ const Events = () => {
     events,
     error: myEventsError,
   } = useSelector((state) => state.myEvents);
+  const {
+    loading: deleteEventLoading,
+    success: deleteEventSuccess,
+    error: deleteEventError,
+  } = useSelector((state) => state.deleteEvent);
 
   useEffect(() => {
     const init = () => {
@@ -43,7 +52,7 @@ const Events = () => {
       form.values.event_name = "";
       form.values.menu_id = "";
     }
-  }, [dispatch, success]);
+  }, [dispatch, success, deleteEventSuccess]);
 
   const form = useFormik({
     validateOnMount: true,
@@ -68,8 +77,20 @@ const Events = () => {
       dispatch(addEvent(values));
     },
   });
+
+  const deleteEventHandler = (id) => {
+    popup(
+      "Delete an event",
+      "Are you sure you want to delete the event?",
+      () => {
+        dispatch(deleteEvent(id));
+      },
+      () => navigate("/events")
+    );
+  };
   return (
     <>
+      <Meta title="CE - My Events" />
       <FormToggler
         desc="Add an event"
         state={toggleEventForm}
@@ -137,6 +158,8 @@ const Events = () => {
       <Row>
         {myEventsError && <Message>{myEventsError}</Message>}
         {myEventsLoading && <Loader />}
+        {deleteEventError && <Message>{deleteEventError}</Message>}
+        {deleteEventLoading && <Loader />}
         {events && events.length ? (
           <>
             <h3 className="my-3">My Events</h3>
@@ -153,6 +176,7 @@ const Events = () => {
                     ? menus.find((menu) => menu._id === event.menu_id)?.name
                     : event.menu_id
                 }
+                deleteEventHandler={deleteEventHandler}
               />
             ))}
           </>

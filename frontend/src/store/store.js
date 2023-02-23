@@ -21,6 +21,7 @@ import {
   myEventsReducer,
   addEventReducer,
   getSingleEventReducer,
+  deleteEventReducer,
 } from "./reducers/eventReducers";
 
 const reducer = {
@@ -39,6 +40,7 @@ const reducer = {
   myEvents: myEventsReducer,
   addEvent: addEventReducer,
   getSingleEvent: getSingleEventReducer,
+  deleteEvent: deleteEventReducer,
 };
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

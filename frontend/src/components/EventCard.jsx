@@ -1,7 +1,15 @@
 import { Col, Card, Button, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const EventCard = ({ name, date, income, menu_name, attendance, id }) => {
+const EventCard = ({
+  name,
+  date,
+  income,
+  menu_name,
+  attendance,
+  id,
+  deleteEventHandler,
+}) => {
   const event_date = new Date(date).toLocaleDateString("he-IL");
   const event_time = new Date(date).toLocaleTimeString("he-IL", {
     timeStyle: "short",
@@ -10,8 +18,15 @@ const EventCard = ({ name, date, income, menu_name, attendance, id }) => {
   return (
     <Col sm={12} md={4} lg={3} className="mb-3 mb-md-0 mt-0 mt-lg-3">
       <Card className="h-100 shadow-lg">
-        <Card.Header>
+        <Card.Header className="d-flex justify-content-between">
           <span className="fw-bold">{`${event_date} - ${event_time}`}</span>
+          <Button
+            title="Delete Event"
+            className="btn-sm"
+            onClick={() => deleteEventHandler(id)}
+          >
+            <i className="fa fa-trash fa-lg" aria-hidden="true"></i>
+          </Button>
         </Card.Header>
         <Card.Body>
           <Card.Title>

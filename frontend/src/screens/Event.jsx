@@ -9,6 +9,7 @@ import { getMenuItems } from "../store/actions/menuItemActions";
 import { getMyItems } from "../store/actions/itemActions";
 import { getMenuDetails, getMyMenus } from "../store/actions/menuActions";
 import { GET_EVENT_RESET } from "../store/constants/eventConstants";
+import Meta from "../components/Meta";
 
 const Event = () => {
   const { id } = useParams();
@@ -52,6 +53,7 @@ const Event = () => {
 
   return (
     <>
+      <Meta title={`CE - ${event ? event.event_name : "Event"}`} />
       <Breadcrumb className="mb-4">
         <Breadcrumb.Item className="breadcrumb-non-active" href="/events">
           Events

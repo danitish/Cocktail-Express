@@ -7,6 +7,7 @@ import { getMyMenus } from "../store/actions/menuActions";
 import { getMyItems } from "../store/actions/itemActions";
 import { myEvents } from "../store/actions/eventActions";
 import { Link } from "react-router-dom";
+import Meta from "../components/Meta";
 
 const Home = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
@@ -50,6 +51,7 @@ const Home = () => {
 
   return (
     <>
+      <Meta />
       <Row>
         <header>
           <h4 className="header my-3 fade-in-image">

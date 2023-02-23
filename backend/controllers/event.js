@@ -33,6 +33,7 @@ const myEvents = asyncHandler(async (req, res) => {
 const getEventById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   if (!id) {
+    res.status(400);
     throw new Error("Insufficient values provided");
   }
   const event = await Event.findById(id).select("-__v");
@@ -43,4 +44,20 @@ const getEventById = asyncHandler(async (req, res) => {
   res.send(event);
 });
 
-module.exports = { createEvent, myEvents, getEventById };
+const deleteEvent = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    res.status(400);
+    throw new Error("Insufficient values provided");
+  }
+  const event = await Event.findById(id);
+  if (!event) {
+    res.status(404);
+    throw new Error("No matching event found");
+  }
+  await event.remove();
+  res.status(200);
+  res.send("Event was removed successfully");
+});
+
+module.exports = { createEvent, myEvents, getEventById, deleteEvent };

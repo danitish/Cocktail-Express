@@ -2,6 +2,9 @@ import {
   ADD_EVENT_FAIL,
   ADD_EVENT_REQUEST,
   ADD_EVENT_SUCCESS,
+  DELETE_EVENT_FAIL,
+  DELETE_EVENT_REQUEST,
+  DELETE_EVENT_SUCCESS,
   GET_EVENT_FAIL,
   GET_EVENT_REQUEST,
   GET_EVENT_SUCCESS,
@@ -87,6 +90,32 @@ export const getSingleEvent = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: GET_EVENT_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const deleteEvent = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: DELETE_EVENT_REQUEST });
+    const {
+      userLogin: {
+        userInfo: { token },
+      },
+    } = getState();
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+    await httpService.delete(`/api/events/${id}`, config);
+    dispatch({ type: DELETE_EVENT_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: DELETE_EVENT_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

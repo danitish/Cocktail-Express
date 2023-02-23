@@ -13,6 +13,7 @@ import validateFormikWithJoi from "../utils/validateFormikWithJoi";
 import { addMenu, getMyMenus, deleteMenu } from "../store/actions/menuActions";
 import { useEffect } from "react";
 import { toastifySuccess } from "../utils/toastify";
+import Meta from "../components/Meta";
 
 const Menus = () => {
   const [toggleMenuForm, setToggleMenuForm] = useState(false);
@@ -61,6 +62,7 @@ const Menus = () => {
   }, [dispatch, success, deleteMenuSuccess]);
   return (
     <>
+      <Meta title="CE - My Menus" />
       <FormToggler
         desc="Add a menu"
         state={toggleMenuForm}

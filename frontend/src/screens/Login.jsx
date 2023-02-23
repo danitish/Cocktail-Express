@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { toastifySuccess } from "../utils/toastify";
+import Meta from "../components/Meta";
 
 const Login = () => {
   const { userInfo, loading, error } = useSelector((state) => state.userLogin);
@@ -20,7 +21,7 @@ const Login = () => {
 
   useEffect(() => {
     if (userInfo) {
-      toastifySuccess("Successfully logged in");
+      toastifySuccess(`Welcome, ${userInfo.full_name}`);
       navigate("/");
     }
   }, [userInfo, navigate]);
@@ -47,6 +48,7 @@ const Login = () => {
 
   return (
     <div className="login-stage d-flex align-items-center flex-column min-vh-100 gradient-background">
+      <Meta title="Cocktail Express - Login" />
       <div className="logo fade-in-image mt-4 mb-4">
         <img
           width="270px"
