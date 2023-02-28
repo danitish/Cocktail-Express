@@ -13,6 +13,29 @@ const schema = new mongoose.Schema(
       required: false,
       default: null,
     },
+    menu_details: {
+      menu_name: { type: String, required: false, default: "" },
+      menu_price_per_person: {
+        type: Number,
+        required: false,
+        default: 0,
+      },
+      menu_items: [
+        {
+          item_id: {
+            type: mongoose.Types.ObjectId || null,
+            required: false,
+            default: null,
+          },
+          price_per_person: {
+            type: Number,
+            required: false,
+            default: 0,
+          },
+        },
+      ],
+    },
+
     event_name: {
       type: String,
       required: true,
