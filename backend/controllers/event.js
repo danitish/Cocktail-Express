@@ -1,14 +1,34 @@
 const Event = require("../models/event");
+const Menu = require("../models/menu");
+const Menu_Item = require("../models/menu_item");
 const asyncHandler = require("express-async-handler");
 
 const createEvent = asyncHandler(async (req, res) => {
   const { event_name, event_date, estimated_income, menu_id, attendance } =
     req.body;
+
+  let menu_details = {};
+
+  if (menu_id) {
+    const menu = await Menu.findById(menu_id);
+    if (menu) {
+      menu_details.menu_price_per_person = menu.price_per_person;
+      menu_details.menu_name = menu.name;
+    }
+    const menu_items_by_menu_id = await Menu_Item.find({ menu_id }).select(
+      "item_id price_per_person -_id"
+    );
+    if (menu_items_by_menu_id) {
+      menu_details.menu_items = menu_items_by_menu_id;
+    }
+  }
+
   const event = await Event.create({
     event_name,
     event_date,
     estimated_income,
     menu_id,
+    menu_details,
     attendance,
     user_id: req.user._id,
   });

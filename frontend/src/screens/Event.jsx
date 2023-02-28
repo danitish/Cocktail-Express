@@ -21,9 +21,9 @@ const Event = () => {
     error: eventInfoError,
   } = useSelector((state) => state.getSingleEvent);
 
-  const { menuItems } = useSelector((state) => state.menuItems);
   const { items } = useSelector((state) => state.myItems);
-  const { menu: menuDetails } = useSelector((state) => state.menuDetails);
+
+  console.log(event);
 
   useEffect(() => {
     const init = () => {
@@ -31,13 +31,8 @@ const Event = () => {
         dispatch(getSingleEvent(id));
       }
       dispatch(getMyItems());
-      dispatch(getMyMenus());
     };
     init();
-    if (event) {
-      dispatch(getMenuDetails(event.menu_id));
-      dispatch(getMenuItems(event.menu_id));
-    }
 
     return () => {
       if (event) {
@@ -47,8 +42,8 @@ const Event = () => {
   }, [dispatch, id, event]);
 
   const menuPPPTimesAttendance =
-    menuDetails?.price_per_person * event?.attendance
-      ? menuDetails?.price_per_person * event?.attendance
+    event?.menu_details.menu_price_per_person * event?.attendance
+      ? event?.menu_details.menu_price_per_person * event?.attendance
       : 0;
 
   return (
@@ -68,7 +63,7 @@ const Event = () => {
         <>
           <h4 className="mt-5 mb-3">
             <span className="me-2">Menu Items:</span>
-            <span className="h5">({menuDetails?.name})</span>
+            <span className="h5">({event.menu_details.menu_name})</span>
           </h4>
           <Table striped bordered hover responsive className="table-sm">
             <thead>
@@ -78,18 +73,17 @@ const Event = () => {
               </tr>
             </thead>
             <tbody>
-              {menuItems &&
-                menuItems.map((item) => (
-                  <tr key={item._id}>
-                    <td>
-                      {items &&
-                        items.find(
-                          (singleItem) => singleItem._id === item.item_id
-                        ).name}
-                    </td>
-                    <td>{"₪" + item.price_per_person}</td>
-                  </tr>
-                ))}
+              {event.menu_details.menu_items.map((item) => (
+                <tr key={item._id}>
+                  <td>
+                    {items &&
+                      items.find(
+                        (singleItem) => singleItem._id === item.item_id
+                      ).name}
+                  </td>
+                  <td>{"₪" + item.price_per_person}</td>
+                </tr>
+              ))}
             </tbody>
           </Table>
         </>
@@ -107,12 +101,7 @@ const Event = () => {
           </ListGroup.Item>
           <ListGroup.Item>
             <span className="fw-bold">Total cost: </span>
-            <span>
-              ₪
-              {menuPPPTimesAttendance
-                ? menuPPPTimesAttendance.toLocaleString("en-US")
-                : 0}
-            </span>
+            <span>₪{menuPPPTimesAttendance.toLocaleString("en-US")}</span>
           </ListGroup.Item>
           <ListGroup.Item>
             {event?.estimated_income - menuPPPTimesAttendance > 0 ? (
