@@ -23,6 +23,10 @@ import {
   getSingleEventReducer,
   deleteEventReducer,
 } from "./reducers/eventReducers";
+import {
+  addExpenseReducer,
+  getExpensesByEventReducer,
+} from "./reducers/expenseReducers";
 
 const reducer = {
   userLogin: userLoginReducer,
@@ -41,6 +45,8 @@ const reducer = {
   addEvent: addEventReducer,
   getSingleEvent: getSingleEventReducer,
   deleteEvent: deleteEventReducer,
+  addExpense: addExpenseReducer,
+  getExpensesByEvent: getExpensesByEventReducer,
 };
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

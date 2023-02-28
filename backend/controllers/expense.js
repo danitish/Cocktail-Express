@@ -2,11 +2,11 @@ const Expense = require("../models/expense");
 const asyncHandler = require("express-async-handler");
 
 const addExpense = asyncHandler(async (req, res) => {
-  const { event_id, expense_name, qty, price_per_unit } = req.body;
+  const { event_id, name, qty, price_per_unit } = req.body;
   const expense = await Expense.create({
     event_id,
     user_id: req.user._id,
-    expense_name,
+    name,
     qty,
     price_per_unit,
     total_price: qty * price_per_unit,
@@ -20,7 +20,7 @@ const addExpense = asyncHandler(async (req, res) => {
 });
 
 const getExpensesByEvent = asyncHandler(async (req, res) => {
-  const { event_id } = req.body;
+  const { event_id } = req.params;
   const expenses = await Expense.find({ event_id });
   if (!expenses) {
     res.status(404);
@@ -30,7 +30,7 @@ const getExpensesByEvent = asyncHandler(async (req, res) => {
   res.send(expenses);
 });
 
-const getAllMyExpenses = asyncHandler(async (req, res) => {
+const getMyExpenses = asyncHandler(async (req, res) => {
   const expenses = await Expense.find({ user_id: req.user._id });
   if (!expenses) {
     res.status(404);
@@ -40,4 +40,4 @@ const getAllMyExpenses = asyncHandler(async (req, res) => {
   res.send(expenses);
 });
 
-module.exports = { addExpense, getExpensesByEvent, getAllMyExpenses };
+module.exports = { addExpense, getExpensesByEvent, getMyExpenses };

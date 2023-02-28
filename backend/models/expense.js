@@ -12,7 +12,7 @@ const schema = new mongoose.Schema(
       ref: "user",
       required: true,
     },
-    expense_name: {
+    name: {
       type: String,
       required: true,
     },
