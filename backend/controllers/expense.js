@@ -20,8 +20,8 @@ const addExpense = asyncHandler(async (req, res) => {
 });
 
 const getExpensesByEvent = asyncHandler(async (req, res) => {
-  const { event_id } = req.params;
-  const expenses = await Expense.find({ event_id });
+  const { id } = req.params;
+  const expenses = await Expense.find({ event_id: id });
   if (!expenses) {
     res.status(404);
     throw new Error("No expenses found");
@@ -40,4 +40,21 @@ const getMyExpenses = asyncHandler(async (req, res) => {
   res.send(expenses);
 });
 
-module.exports = { addExpense, getExpensesByEvent, getMyExpenses };
+const deleteSingleExpense = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const expense = await Expense.findById(id);
+  if (!expense) {
+    res.status(404);
+    throw new Error("No matching expense found");
+  }
+  await expense.remove();
+  res.status(200);
+  res.send("Deleted successfully");
+});
+
+module.exports = {
+  addExpense,
+  getExpensesByEvent,
+  getMyExpenses,
+  deleteSingleExpense,
+};

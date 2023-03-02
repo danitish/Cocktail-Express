@@ -26,6 +26,7 @@ import {
 import {
   addExpenseReducer,
   getExpensesByEventReducer,
+  deleteExpenseReducer,
 } from "./reducers/expenseReducers";
 
 const reducer = {
@@ -47,6 +48,7 @@ const reducer = {
   deleteEvent: deleteEventReducer,
   addExpense: addExpenseReducer,
   getExpensesByEvent: getExpensesByEventReducer,
+  deleteExpense: deleteExpenseReducer,
 };
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

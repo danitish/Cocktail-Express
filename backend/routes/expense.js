@@ -6,9 +6,13 @@ const {
   addExpense,
   getExpensesByEvent,
   getMyExpenses,
+  deleteSingleExpense,
 } = require("../controllers/expense");
 
 router.route("/").post(auth, addExpense).get(auth, getMyExpenses);
-router.get("/:event_id", auth, getExpensesByEvent);
+router
+  .route("/:id")
+  .get(auth, getExpensesByEvent)
+  .delete(auth, deleteSingleExpense);
 
 module.exports = router;

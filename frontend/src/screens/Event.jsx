@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Button } from "react-bootstrap";
 import FormToggler from "../components/FormToggler";
 import FormContainer from "../components/FormContainer";
 import Input from "../common/Input";
@@ -12,17 +11,22 @@ import { toastifySuccess } from "../utils/toastify";
 import { getSingleEvent } from "../store/actions/eventActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { Breadcrumb, Table, ListGroup } from "react-bootstrap";
+import { Breadcrumb, Table, ListGroup, Form, Button } from "react-bootstrap";
 import { getMyItems } from "../store/actions/itemActions";
 import { GET_EVENT_RESET } from "../store/constants/eventConstants";
 import Meta from "../components/Meta";
 import {
   addExpense,
   getExpensesByEventId,
+  deleteExpense,
 } from "../store/actions/expenseActions";
+import { popup } from "../utils/popups";
+import { ADD_EXPENSE_RESET } from "../store/constants/expenseConstants";
 
 const Event = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   const [toggleExpenseForm, setToggleExpenseForm] = useState(false);
@@ -45,6 +49,10 @@ const Event = () => {
     success: addExpenseSuccess,
     error: addExpenseError,
   } = useSelector((state) => state.addExpense);
+
+  const { success: deleteExpenseSuccess } = useSelector(
+    (state) => state.deleteExpense
+  );
 
   const form = useFormik({
     validateOnMount: true,
@@ -71,6 +79,10 @@ const Event = () => {
 
     if (addExpenseSuccess) {
       toastifySuccess("Expense added");
+      form.values.name = "";
+      form.values.price_per_unit = "";
+      form.values.qty = "";
+      dispatch({ type: ADD_EXPENSE_RESET });
     }
 
     return () => {
@@ -78,7 +90,7 @@ const Event = () => {
         dispatch({ type: GET_EVENT_RESET });
       }
     };
-  }, [dispatch, id, event, addExpenseSuccess]);
+  }, [dispatch, id, event, addExpenseSuccess, deleteExpenseSuccess]);
 
   const menuPPPTimesAttendance =
     event?.menu_details.menu_price_per_person * event?.attendance
@@ -89,6 +101,18 @@ const Event = () => {
     expenses && expenses.length
       ? expenses?.reduce((acc, exp) => acc + exp.total_price, 0)
       : 0;
+
+  const deleteExpenseHandler = (expense_id) => {
+    popup(
+      "Delete an expense",
+      "Are you sure you want to delete the expense?",
+      () => {
+        dispatch(deleteExpense(expense_id));
+        toastifySuccess("Expense removed");
+      },
+      () => navigate(`/events/${id}`)
+    );
+  };
 
   return (
     <>
@@ -188,6 +212,7 @@ const Event = () => {
                     <th>NAME</th>
                     <th>QTY</th>
                     <th>TOTAL</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -196,6 +221,14 @@ const Event = () => {
                       <td>{expense.name}</td>
                       <td>{expense.qty}</td>
                       <td>{"₪" + expense.total_price}</td>
+                      <td className="d-flex justify-content-center">
+                        <Button
+                          title="Delete Expense"
+                          onClick={() => deleteExpenseHandler(expense._id)}
+                        >
+                          <i className="fa fa-trash" aria-hidden="true"></i>
+                        </Button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
