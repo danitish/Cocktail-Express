@@ -5,11 +5,14 @@ const { auth } = require("../middleware/auth");
 const {
   addExpense,
   getExpensesByEvent,
-  getAllMyExpenses,
+  getMyExpenses,
+  deleteSingleExpense,
 } = require("../controllers/expense");
 
-router.post("/createExpense", auth, addExpense);
-router.post("/getExpensesByEvent", auth, getExpensesByEvent);
-router.get("/getAllExpenses", auth, getAllMyExpenses);
+router.route("/").post(auth, addExpense).get(auth, getMyExpenses);
+router
+  .route("/:id")
+  .get(auth, getExpensesByEvent)
+  .delete(auth, deleteSingleExpense);
 
 module.exports = router;
