@@ -12,6 +12,9 @@ import {
   MY_EVENTS_FAIL,
   MY_EVENTS_REQUEST,
   MY_EVENTS_SUCCESS,
+  UPDATE_PROFIT_FAIL,
+  UPDATE_PROFIT_REQUEST,
+  UPDATE_PROFIT_SUCCESS,
 } from "../constants/eventConstants";
 
 export const myEventsReducer = (state = {}, action) => {
@@ -62,6 +65,19 @@ export const deleteEventReducer = (state = {}, action) => {
     case DELETE_EVENT_SUCCESS:
       return { loading: false, success: true };
     case DELETE_EVENT_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const updateEventProfitReducer = (state = {}, action) => {
+  switch (action.type) {
+    case UPDATE_PROFIT_REQUEST:
+      return { loading: true };
+    case UPDATE_PROFIT_SUCCESS:
+      return { loading: false, success: true };
+    case UPDATE_PROFIT_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

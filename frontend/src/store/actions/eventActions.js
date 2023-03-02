@@ -11,6 +11,9 @@ import {
   MY_EVENTS_FAIL,
   MY_EVENTS_REQUEST,
   MY_EVENTS_SUCCESS,
+  UPDATE_PROFIT_FAIL,
+  UPDATE_PROFIT_REQUEST,
+  UPDATE_PROFIT_SUCCESS,
 } from "../constants/eventConstants";
 
 import httpService from "../../services/httpService";
@@ -116,6 +119,32 @@ export const deleteEvent = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: DELETE_EVENT_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const updateEventProfit = (event_id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: UPDATE_PROFIT_REQUEST });
+    const {
+      userLogin: {
+        userInfo: { token },
+      },
+    } = getState();
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+    await httpService.put(`/api/events/${event_id}/profit`, {}, config);
+    dispatch({ type: UPDATE_PROFIT_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PROFIT_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

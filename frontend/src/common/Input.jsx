@@ -5,6 +5,7 @@ export const Input = ({
   error,
   name,
   selectInput,
+  eventMenuOptions,
   options,
   ...rest
 }) => {
@@ -18,7 +19,15 @@ export const Input = ({
           name={name}
           isInvalid={error}
         >
-          <option>Choose one</option>
+          {eventMenuOptions ? (
+            <>
+              <option>Choose one</option>
+              <option>No menu</option>
+            </>
+          ) : (
+            <option>Choose one</option>
+          )}
+
           {options}
         </Form.Select>
       ) : (

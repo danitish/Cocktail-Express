@@ -8,7 +8,10 @@ import { useFormik } from "formik";
 import Joi from "joi";
 import validateFormikWithJoi from "../utils/validateFormikWithJoi";
 import { toastifySuccess } from "../utils/toastify";
-import { getSingleEvent } from "../store/actions/eventActions";
+import {
+  getSingleEvent,
+  updateEventProfit,
+} from "../store/actions/eventActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { Breadcrumb, Table, ListGroup, Form, Button } from "react-bootstrap";
@@ -21,7 +24,10 @@ import {
   deleteExpense,
 } from "../store/actions/expenseActions";
 import { popup } from "../utils/popups";
-import { ADD_EXPENSE_RESET } from "../store/constants/expenseConstants";
+import {
+  ADD_EXPENSE_RESET,
+  DELETE_EXPENSE_RESET,
+} from "../store/constants/expenseConstants";
 
 const Event = () => {
   const { id } = useParams();
@@ -54,6 +60,10 @@ const Event = () => {
     (state) => state.deleteExpense
   );
 
+  const { success: updateProfitSuccess } = useSelector(
+    (state) => state.updateEventProfit
+  );
+
   const form = useFormik({
     validateOnMount: true,
     initialValues: { name: "", qty: "", price_per_unit: "" },
@@ -69,9 +79,7 @@ const Event = () => {
 
   useEffect(() => {
     const init = () => {
-      if (!event) {
-        dispatch(getSingleEvent(id));
-      }
+      dispatch(getSingleEvent(id));
       dispatch(getExpensesByEventId(id));
       dispatch(getMyItems());
     };
@@ -82,7 +90,13 @@ const Event = () => {
       form.values.name = "";
       form.values.price_per_unit = "";
       form.values.qty = "";
+      dispatch(updateEventProfit(id));
       dispatch({ type: ADD_EXPENSE_RESET });
+    }
+
+    if (deleteExpenseSuccess) {
+      dispatch(updateEventProfit(id));
+      dispatch({ type: DELETE_EXPENSE_RESET });
     }
 
     return () => {
@@ -90,14 +104,20 @@ const Event = () => {
         dispatch({ type: GET_EVENT_RESET });
       }
     };
-  }, [dispatch, id, event, addExpenseSuccess, deleteExpenseSuccess]);
+  }, [
+    dispatch,
+    id,
+    addExpenseSuccess,
+    deleteExpenseSuccess,
+    updateProfitSuccess,
+  ]);
 
-  const menuPPPTimesAttendance =
+  let menuPPPTimesAttendance =
     event?.menu_details.menu_price_per_person * event?.attendance
       ? event?.menu_details.menu_price_per_person * event?.attendance
       : 0;
 
-  const expensesTotalPrice =
+  let expensesTotalPrice =
     expenses && expenses.length
       ? expenses?.reduce((acc, exp) => acc + exp.total_price, 0)
       : 0;
@@ -219,8 +239,10 @@ const Event = () => {
                   {expenses.map((expense) => (
                     <tr key={expense._id}>
                       <td>{expense.name}</td>
-                      <td>{expense.qty}</td>
-                      <td>{"₪" + expense.total_price}</td>
+                      <td>{expense.qty.toLocaleString("en-US")}</td>
+                      <td>
+                        {"₪" + expense.total_price.toLocaleString("en-US")}
+                      </td>
                       <td className="d-flex justify-content-center">
                         <Button
                           title="Delete Expense"
@@ -259,35 +281,16 @@ const Event = () => {
             </span>
           </ListGroup.Item>
           <ListGroup.Item>
-            {event?.estimated_income -
-              menuPPPTimesAttendance -
-              expensesTotalPrice >
-            0 ? (
+            {event?.profit > 0 ? (
               <>
                 <span className="fw-bold text-success">Profit: </span>
-                <span>
-                  ₪
-                  {(
-                    event?.estimated_income -
-                    menuPPPTimesAttendance -
-                    expensesTotalPrice
-                  ).toLocaleString("en-US")}
-                </span>
+                <span>₪{event?.profit.toLocaleString("en-US")}</span>
               </>
             ) : (
               <>
                 <span className="fw-bold text-danger">Loss: </span>
                 <span>
-                  ₪
-                  {
-                    (
-                      event?.estimated_income -
-                      menuPPPTimesAttendance -
-                      expensesTotalPrice
-                    )
-                      .toLocaleString("en-US")
-                      .split("-")[1]
-                  }
+                  ₪{event?.profit.toLocaleString("en-US").split("-")[1]}
                 </span>
               </>
             )}

@@ -18,6 +18,7 @@ import {
 } from "../store/actions/menuActions";
 import { popup } from "../utils/popups";
 import Meta from "../components/Meta";
+import { ADD_ITEM_RESET } from "../store/constants/itemConstants";
 
 const Items = () => {
   const dispatch = useDispatch();
@@ -48,6 +49,9 @@ const Items = () => {
         dispatch(updateMenuPricePerPerson(menu._id));
       }
     }
+    return () => {
+      dispatch({ type: ADD_ITEM_RESET });
+    };
   }, [dispatch, addItemSuccess, removeItemSuccess]);
 
   const form = useFormik({
@@ -136,7 +140,7 @@ const Items = () => {
               {items.map((item) => (
                 <tr key={item._id}>
                   <td>{item.name}</td>
-                  <td>{item.price + "₪"}</td>
+                  <td>{"₪" + item.price}</td>
                   <td className="d-flex justify-content-center">
                     <Button
                       title="Delete Item"

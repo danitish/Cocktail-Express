@@ -5,6 +5,7 @@ import {
   ADD_EXPENSE_SUCCESS,
   DELETE_EXPENSE_FAIL,
   DELETE_EXPENSE_REQUEST,
+  DELETE_EXPENSE_RESET,
   DELETE_EXPENSE_SUCCESS,
   EXPENSES_BY_EVENT_FAIL,
   EXPENSES_BY_EVENT_REQUEST,
@@ -47,6 +48,8 @@ export const deleteExpenseReducer = (state = {}, action) => {
       return { loading: false, success: true };
     case DELETE_EXPENSE_FAIL:
       return { loading: false, error: action.payload };
+    case DELETE_EXPENSE_RESET:
+      return {};
     default:
       return state;
   }

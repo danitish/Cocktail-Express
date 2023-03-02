@@ -16,7 +16,7 @@ const EventCard = ({
   });
 
   return (
-    <Col sm={12} md={4} lg={3} className="mb-3 mb-md-0 mt-0 mt-lg-3">
+    <Col sm={12} md={4} lg={3} className="mb-3 mt-0 mt-lg-3">
       <Card className="h-100 shadow-lg">
         <Card.Header className="d-flex justify-content-between">
           <span className="fw-bold">{`${event_date} - ${event_time}`}</span>
@@ -28,11 +28,11 @@ const EventCard = ({
             <i className="fa fa-trash fa-lg" aria-hidden="true"></i>
           </Button>
         </Card.Header>
-        <Card.Body>
+        <Card.Body className="d-flex flex-column">
           <Card.Title>
             <span className="lead">{name}</span>
           </Card.Title>
-          <ListGroup className="list-group-flush py-2 my-3">
+          <ListGroup className="list-group-flush py-2 my-3 flex-fill">
             <ListGroup.Item>
               <span style={{ letterSpacing: 1 }}>
                 {menu_name ? menu_name : "No menu"}

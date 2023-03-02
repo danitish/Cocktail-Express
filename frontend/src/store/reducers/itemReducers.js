@@ -8,6 +8,7 @@ import {
   REMOVE_ITEM_FAIL,
   REMOVE_ITEM_REQUEST,
   REMOVE_ITEM_SUCCESS,
+  ADD_ITEM_RESET,
 } from "../constants/itemConstants";
 
 export const addItemReducer = (state = {}, action) => {
@@ -18,7 +19,8 @@ export const addItemReducer = (state = {}, action) => {
       return { loading: false, success: true };
     case ADD_ITEM_FAIL:
       return { loading: false, error: action.payload };
-
+    case ADD_ITEM_RESET:
+      return {};
     default:
       return state;
   }
