@@ -1,6 +1,7 @@
 const Event = require("../models/event");
 const Menu = require("../models/menu");
 const Menu_Item = require("../models/menu_item");
+const Expense = require("../models/expense");
 const asyncHandler = require("express-async-handler");
 
 const createEvent = asyncHandler(async (req, res) => {
@@ -8,6 +9,7 @@ const createEvent = asyncHandler(async (req, res) => {
     req.body;
 
   let menu_details = {};
+  let profit = 0;
 
   if (menu_id) {
     const menu = await Menu.findById(menu_id);
@@ -23,6 +25,12 @@ const createEvent = asyncHandler(async (req, res) => {
     }
   }
 
+  if (menu_details.menu_price_per_person) {
+    profit = estimated_income - menu_details.menu_price_per_person * attendance;
+  } else {
+    profit = estimated_income;
+  }
+
   const event = await Event.create({
     event_name,
     event_date,
@@ -31,6 +39,7 @@ const createEvent = asyncHandler(async (req, res) => {
     menu_details,
     attendance,
     user_id: req.user._id,
+    profit,
   });
   if (!event) {
     res.status(500);
@@ -42,6 +51,7 @@ const createEvent = asyncHandler(async (req, res) => {
 
 const myEvents = asyncHandler(async (req, res) => {
   const events = await Event.find({ user: req.user._id }).select("-__v");
+
   if (!events) {
     res.status(404);
     throw new Error("No events found");
@@ -71,6 +81,7 @@ const deleteEvent = asyncHandler(async (req, res) => {
     throw new Error("Insufficient values provided");
   }
   const event = await Event.findById(id);
+
   if (!event) {
     res.status(404);
     throw new Error("No matching event found");
@@ -80,4 +91,43 @@ const deleteEvent = asyncHandler(async (req, res) => {
   res.send("Event was removed successfully");
 });
 
-module.exports = { createEvent, myEvents, getEventById, deleteEvent };
+const updateProfit = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    res.status(400);
+    throw new Error("Insufficient values provided");
+  }
+  const event = await Event.findById(id);
+
+  if (!event) {
+    res.status(404);
+    throw new Error("No matching event found");
+  }
+
+  const expenses = await Expense.find({ event_id: id });
+
+  const expenses_total_sum = expenses.reduce(
+    (acc, expense) => acc + expense.total_price,
+    0
+  );
+
+  const menu_total_sum = event.menu_details.menu_price_per_person
+    ? event.menu_details.menu_price_per_person * event.attendance
+    : 0;
+
+  event.profit = event.estimated_income - expenses_total_sum - menu_total_sum;
+
+  await event.save();
+
+  res.status(200);
+  res.send("Profit was successfully edited");
+});
+
+module.exports = {
+  createEvent,
+  myEvents,
+  getEventById,
+  deleteEvent,
+  updateProfit,
+};

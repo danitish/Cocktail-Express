@@ -65,7 +65,7 @@ const Menu = () => {
     }),
     onSubmit(values) {
       if (values.item === "Choose one") {
-        toastifyError("No such item exists");
+        toastifyError("Must select a valid option");
         return;
       }
       dispatch(addMenuItem(menu._id, values.item, values.item_quantity));

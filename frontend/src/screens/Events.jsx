@@ -6,7 +6,7 @@ import Input from "../common/Input";
 import { useFormik } from "formik";
 import Joi from "joi";
 import validateFormikWithJoi from "../utils/validateFormikWithJoi";
-import { toastifySuccess } from "../utils/toastify";
+import { toastifySuccess, toastifyError } from "../utils/toastify";
 import { useEffect } from "react";
 import { getMyMenus } from "../store/actions/menuActions";
 import { useDispatch, useSelector } from "react-redux";
@@ -67,11 +67,15 @@ const Events = () => {
       event_name: Joi.string().required().label("Event name"),
       event_date: Joi.date().required().label("Event date"),
       attendance: Joi.number().required().label("Attendance"),
-      estimated_income: Joi.string().required().label("Estimated income"),
+      estimated_income: Joi.number().required().label("Estimated income"),
       menu_id: Joi.string().label("Menu").required(),
     }),
     onSubmit(values) {
       if (values.menu_id === "Choose one") {
+        toastifyError("Must select a valid option");
+        return;
+      }
+      if (values.menu_id === "No menu") {
         dispatch(addEvent({ ...values, menu_id: null }));
       }
       dispatch(addEvent(values));
@@ -127,9 +131,9 @@ const Events = () => {
             />
             <Input
               selectInput
+              eventMenuOptions
               as="select"
               name="menu"
-              placeholder="Menu (optional)"
               label="Menu"
               options={menus?.map((menu) => (
                 <option key={menu._id} value={menu._id}>
@@ -142,6 +146,7 @@ const Events = () => {
             <Input
               name="income"
               label="Income"
+              type="number"
               error={
                 form.touched.estimated_income && form.errors.estimated_income
               }

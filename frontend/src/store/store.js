@@ -16,12 +16,14 @@ import {
 import {
   addMenuItemReducer,
   menuItemsReducer,
+  removeMenuItemReducer,
 } from "./reducers/menuItemReducers";
 import {
   myEventsReducer,
   addEventReducer,
   getSingleEventReducer,
   deleteEventReducer,
+  updateEventProfitReducer,
 } from "./reducers/eventReducers";
 import {
   addExpenseReducer,
@@ -42,10 +44,12 @@ const reducer = {
   updatePricePerPerson: updatePricePerPersonReducer,
   addMenuItem: addMenuItemReducer,
   menuItems: menuItemsReducer,
+  removeMenuItem: removeMenuItemReducer,
   myEvents: myEventsReducer,
   addEvent: addEventReducer,
   getSingleEvent: getSingleEventReducer,
   deleteEvent: deleteEventReducer,
+  updateEventProfit: updateEventProfitReducer,
   addExpense: addExpenseReducer,
   getExpensesByEvent: getExpensesByEventReducer,
   deleteExpense: deleteExpenseReducer,

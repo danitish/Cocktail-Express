@@ -46,4 +46,21 @@ const getMenuItemsByMenuId = asyncHandler(async (req, res) => {
   res.send(associated_items);
 });
 
-module.exports = { createMenuItem, getMenuItemsByMenuId };
+const removeMenuItem = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    res.status(400);
+    throw new Error("Insufficient values provided");
+  }
+  const menuItem = await Menu_Item.findById(id);
+  if (!menuItem) {
+    res.status(404);
+    throw new Error("No matching item was found");
+  }
+
+  await menuItem.remove();
+  res.status(200);
+  res.send("Item was removed from menu successfully");
+});
+
+module.exports = { createMenuItem, getMenuItemsByMenuId, removeMenuItem };
