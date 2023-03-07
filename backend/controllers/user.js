@@ -54,4 +54,19 @@ const loginUser = asyncHandler(async (req, res) => {
   throw new Error("Invalid email or password");
 });
 
-module.exports = { registerUser, loginUser };
+const getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+  res.send({
+    _id: user._id,
+    full_name: user.full_name,
+    business_name: user.business_name,
+    email: user.email,
+  });
+});
+
+module.exports = { registerUser, loginUser, getUserProfile };

@@ -7,7 +7,7 @@ import FormContainer from "../components/FormContainer";
 import { useState, useEffect } from "react";
 import { getMyItems, addItem, removeItem } from "../store/actions/itemActions";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import FormToggler from "../components/FormToggler";
@@ -19,10 +19,13 @@ import {
 import { popup } from "../utils/popups";
 import Meta from "../components/Meta";
 import { ADD_ITEM_RESET } from "../store/constants/itemConstants";
+import ReturnToProfile from "../components/ReturnToProfile";
 
 const Items = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const profileRef = searchParams.get("ref");
 
   const { loading, items, error } = useSelector((state) => state.myItems);
   const { error: addItemError, success: addItemSuccess } = useSelector(
@@ -84,6 +87,7 @@ const Items = () => {
   return (
     <>
       <Meta title="CE - My Items" />
+      {profileRef && <ReturnToProfile />}
       <FormToggler
         desc="Add an item"
         state={toggleAddItemForm}

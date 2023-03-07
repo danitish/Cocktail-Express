@@ -14,9 +14,14 @@ import { addMenu, getMyMenus, deleteMenu } from "../store/actions/menuActions";
 import { useEffect } from "react";
 import { toastifySuccess } from "../utils/toastify";
 import Meta from "../components/Meta";
+import { useSearchParams } from "react-router-dom";
+import ReturnToProfile from "../components/ReturnToProfile";
 
 const Menus = () => {
   const [toggleMenuForm, setToggleMenuForm] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const profileRef = searchParams.get("ref");
+
   const dispatch = useDispatch();
   const { loading, success, error } = useSelector((state) => state.addMenu);
   const {
@@ -63,6 +68,7 @@ const Menus = () => {
   return (
     <>
       <Meta title="CE - My Menus" />
+      {profileRef && <ReturnToProfile />}
       <FormToggler
         desc="Add a menu"
         state={toggleMenuForm}

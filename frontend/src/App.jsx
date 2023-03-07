@@ -8,6 +8,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Login from "./screens/Login";
 import Home from "./screens/Home";
+import Profile from "./screens/Profile";
 import Logout from "./screens/Logout";
 import Items from "./screens/Items";
 import Menus from "./screens/Menus";
@@ -45,6 +46,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Home />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
                   </ProtectedRoute>
                 }
               />

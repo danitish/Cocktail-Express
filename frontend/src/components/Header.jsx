@@ -34,13 +34,13 @@ const Header = () => {
                 title={userInfo.full_name}
                 id="basic-nav-dropdown"
               >
-                <LinkContainer className="pe-0" to="/edit-profile">
+                <LinkContainer className="pe-0" to="/profile">
                   <NavDropdown.Item>
                     <i
                       className="fas fa-edit text-black"
                       aria-hidden="true"
                     ></i>
-                    <span className="ms-1 text-black">Edit profile</span>
+                    <span className="ms-1 text-black">Profile</span>
                   </NavDropdown.Item>
                 </LinkContainer>
                 <NavDropdown.Divider />
