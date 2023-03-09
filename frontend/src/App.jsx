@@ -15,7 +15,6 @@ import Menus from "./screens/Menus";
 import Menu from "./screens/Menu";
 import Events from "./screens/Events";
 import Event from "./screens/Event";
-
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";

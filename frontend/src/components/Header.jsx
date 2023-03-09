@@ -5,11 +5,13 @@ import "../style/header.css";
 
 const Header = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
+
   const navItems = [
     { name: "Events", url: "/events" },
     { name: "Menus", url: "/menus" },
     { name: "Items", url: "/items" },
   ];
+
   return (
     <Navbar bg="primary" expand="sm">
       <Container fluid>

@@ -6,10 +6,11 @@ const {
   registerUser,
   loginUser,
   getUserProfile,
+  updateUserProfile,
 } = require("../controllers/user");
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.route("/").get(auth, getUserProfile);
+router.route("/").get(auth, getUserProfile).put(auth, updateUserProfile);
 
 module.exports = router;

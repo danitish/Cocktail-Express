@@ -6,6 +6,9 @@ import {
   USER_PROFILE_FAIL,
   USER_PROFILE_REQUEST,
   USER_PROFILE_SUCCESS,
+  USER_UPDATE_FAIL,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
 } from "../constants/userConstants";
 import httpService from "../../services/httpService";
 
@@ -66,3 +69,38 @@ export const getUserProfile = () => async (dispatch, getState) => {
     });
   }
 };
+export const updateUserProfile =
+  (profile_data) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: USER_UPDATE_REQUEST });
+
+      const {
+        userLogin: {
+          userInfo: { token },
+        },
+      } = getState();
+
+      const config = {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await httpService.put(
+        "/api/users",
+        profile_data,
+        config
+      );
+      dispatch({ type: USER_UPDATE_SUCCESS });
+      dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    } catch (error) {
+      dispatch({
+        type: USER_UPDATE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

@@ -1,5 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { userLoginReducer, userProfileReducer } from "./reducers/userReducers";
+import {
+  userLoginReducer,
+  userProfileReducer,
+  userUpdateReducer,
+} from "./reducers/userReducers";
 import {
   myItemsReducer,
   addItemReducer,
@@ -34,6 +38,7 @@ import {
 const reducer = {
   userLogin: userLoginReducer,
   userProfile: userProfileReducer,
+  userUpdate: userUpdateReducer,
   addItem: addItemReducer,
   myItems: myItemsReducer,
   removeItem: removeItemReducer,
