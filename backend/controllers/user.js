@@ -54,4 +54,44 @@ const loginUser = asyncHandler(async (req, res) => {
   throw new Error("Invalid email or password");
 });
 
-module.exports = { registerUser, loginUser };
+const getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+  res.send({
+    _id: user._id,
+    full_name: user.full_name,
+    email: user.email,
+  });
+});
+
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const { full_name, email, password } = req.body;
+
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  user.full_name = full_name ? full_name : user.full_name;
+  user.email = email ? email : user.email;
+  if (password && password.length) {
+    user.password = password;
+  }
+  await user.save();
+
+  res.status(200);
+  res.send({
+    _id: user._id,
+    full_name: user.full_name,
+    email: user.email,
+    isAdmin: user.isAdmin,
+    token: user.generateToken(),
+  });
+});
+
+module.exports = { registerUser, loginUser, getUserProfile, updateUserProfile };

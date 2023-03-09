@@ -1,0 +1,7 @@
+.return-to-profile {
+  text-decoration: none;
+}
+
+.return-to-profile:hover {
+  text-decoration: underline;
+}

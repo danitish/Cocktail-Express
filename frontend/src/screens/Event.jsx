@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import FormToggler from "../components/FormToggler";
 import FormContainer from "../components/FormContainer";
@@ -28,9 +28,13 @@ import {
   ADD_EXPENSE_RESET,
   DELETE_EXPENSE_RESET,
 } from "../store/constants/expenseConstants";
+import ReturnToProfile from "../components/ReturnToProfile";
 
 const Event = () => {
   const { id } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const profileRef = searchParams.get("ref");
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -137,6 +141,7 @@ const Event = () => {
   return (
     <>
       <Meta title={`CE - ${event ? event.event_name : "Event"}`} />
+      {profileRef && <ReturnToProfile />}
       <Breadcrumb className="mb-4">
         <Breadcrumb.Item className="breadcrumb-non-active" href="/events">
           Events

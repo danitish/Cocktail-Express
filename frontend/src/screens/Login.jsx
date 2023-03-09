@@ -47,7 +47,7 @@ const Login = () => {
   });
 
   return (
-    <div className="login-stage d-flex align-items-center flex-column min-vh-100 gradient-background">
+    <div className="login-stage d-flex align-items-center flex-column min-vh-100 gradient-background min-vh-100">
       <Meta title="Cocktail Express - Login" />
       <div className="logo fade-in-image mt-4 mb-4">
         <img
