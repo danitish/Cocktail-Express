@@ -27,6 +27,7 @@ const Analytics = () => {
   const [eventYears, setEventYears] = useState();
   const [data, setData] = useState();
 
+
   useEffect(() => {
     const init = () => {
       if (!events) {
@@ -89,26 +90,30 @@ const Analytics = () => {
                 </LineChart>
               </ResponsiveContainer>
             )}
-            {data.reduce((acc, cur) => acc + cur.profit, 0) >= 0 ? (
+            {data && data.reduce((acc, cur) => acc + cur.profit, 0) >= 0 ? (
               <div className="mt-3">
                 Total Yearly Profit:
                 <span className="ms-1 fw-bold">
                   ₪
-                  {data
-                    .reduce((acc, cur) => acc + cur.profit, 0)
-                    .toLocaleString("en-US")}
+                  {data &&
+                    data
+                      .reduce((acc, cur) => acc + cur.profit, 0)
+                      .toLocaleString("en-US")}
                 </span>
               </div>
             ) : (
-              <div className="mt-3">
-                Total Yearly Deficit:
-                <span className="ms-1 fw-bold">
-                  ₪
-                  {data
-                    .reduce((acc, cur) => acc + cur.profit, 0)
-                    .toLocaleString("en-US")}
-                </span>
-              </div>
+              data && (
+                <div className="mt-3">
+                  Total Yearly Deficit:
+                  <span className="ms-1 fw-bold">
+                    ₪
+                    {data &&
+                      data
+                        .reduce((acc, cur) => acc + cur.profit, 0)
+                        .toLocaleString("en-US")}
+                  </span>
+                </div>
+              )
             )}
           </>
         )}

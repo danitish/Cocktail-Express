@@ -8,14 +8,12 @@ import { getMyItems } from "../store/actions/itemActions";
 import { myEvents } from "../store/actions/eventActions";
 import { Link } from "react-router-dom";
 import Meta from "../components/Meta";
-import { getDataFromYearlyEvents } from "../utils/analyticsAlgos";
 
 const Home = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
   const { menus } = useSelector((state) => state.myMenus);
   const { items } = useSelector((state) => state.myItems);
   const { events } = useSelector((state) => state.myEvents);
-  console.log(getDataFromYearlyEvents(events, 1990));
 
   const data_section_info = [
     {
