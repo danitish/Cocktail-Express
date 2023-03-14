@@ -1,7 +1,7 @@
 import "../style/home.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row } from "react-bootstrap";
+import { Row, Button } from "react-bootstrap";
 import { useEffect } from "react";
 import { getMyMenus } from "../store/actions/menuActions";
 import { getMyItems } from "../store/actions/itemActions";
@@ -86,6 +86,13 @@ const Home = () => {
             </div>
           ))}
         </div>
+      </div>
+      <div className="d-flex justify-content-center align-items-center">
+        <Link to="/analytics">
+          <Button className="p-3">
+            <span className="lead">Click to re-direct to full analytics</span>
+          </Button>
+        </Link>
       </div>
     </>
   );

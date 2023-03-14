@@ -6,6 +6,7 @@ export const Input = ({
   name,
   selectInput,
   eventMenuOptions,
+  yearSelect,
   options,
   ...rest
 }) => {
