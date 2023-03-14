@@ -14,6 +14,7 @@ import Menus from "./screens/Menus";
 import Menu from "./screens/Menu";
 import Events from "./screens/Events";
 import Event from "./screens/Event";
+import Analytics from "./screens/Analytics";
 
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -93,6 +94,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Event />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/analytics"
+                element={
+                  <ProtectedRoute>
+                    <Analytics />
                   </ProtectedRoute>
                 }
               />

@@ -1,19 +1,21 @@
 import "../style/home.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row } from "react-bootstrap";
+import { Row, Button } from "react-bootstrap";
 import { useEffect } from "react";
 import { getMyMenus } from "../store/actions/menuActions";
 import { getMyItems } from "../store/actions/itemActions";
 import { myEvents } from "../store/actions/eventActions";
 import { Link } from "react-router-dom";
 import Meta from "../components/Meta";
+import { getDataFromYearlyEvents } from "../utils/analyticsAlgos";
 
 const Home = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
   const { menus } = useSelector((state) => state.myMenus);
   const { items } = useSelector((state) => state.myItems);
   const { events } = useSelector((state) => state.myEvents);
+  console.log(getDataFromYearlyEvents(events, 1990));
 
   const data_section_info = [
     {
@@ -86,6 +88,13 @@ const Home = () => {
             </div>
           ))}
         </div>
+      </div>
+      <div className="d-flex justify-content-center align-items-center">
+        <Link to="/analytics">
+          <Button className="p-3">
+            <span className="lead">Click to re-direct to full analytics</span>
+          </Button>
+        </Link>
       </div>
     </>
   );

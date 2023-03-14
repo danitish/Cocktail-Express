@@ -9,6 +9,7 @@ const Header = () => {
     { name: "Events", url: "/events" },
     { name: "Menus", url: "/menus" },
     { name: "Items", url: "/items" },
+    { name: "Analytics", url: "/analytics" },
   ];
   return (
     <Navbar bg="primary" expand="sm">
