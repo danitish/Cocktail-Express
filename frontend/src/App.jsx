@@ -8,6 +8,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Login from "./screens/Login";
 import Home from "./screens/Home";
+import Profile from "./screens/Profile";
 import Logout from "./screens/Logout";
 import Items from "./screens/Items";
 import Menus from "./screens/Menus";
@@ -15,7 +16,6 @@ import Menu from "./screens/Menu";
 import Events from "./screens/Events";
 import Event from "./screens/Event";
 import Analytics from "./screens/Analytics";
-
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -46,6 +46,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Home />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
                   </ProtectedRoute>
                 }
               />
