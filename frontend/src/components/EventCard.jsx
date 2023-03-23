@@ -16,17 +16,22 @@ const EventCard = ({
   });
 
   return (
-    <Col sm={12} md={4} lg={3} className="mb-3 mt-0 mt-lg-3">
+    <Col sm={12} md={6} lg={4} xxl={3} className="mb-3 mt-0 mt-lg-3">
       <Card className="h-100 shadow-lg">
         <Card.Header className="d-flex justify-content-between">
           <span className="fw-bold">{`${event_date} - ${event_time}`}</span>
-          <Button
-            title="Delete Event"
-            className="btn-sm"
-            onClick={() => deleteEventHandler(id)}
-          >
-            <i className="fa fa-trash fa-lg" aria-hidden="true"></i>
-          </Button>
+          <div>
+            <Button
+              title="Delete Event"
+              className="btn-sm mx-1"
+              onClick={() => deleteEventHandler(id)}
+            >
+              <i className="fa fa-trash fa-lg" aria-hidden="true"></i>
+            </Button>
+            <Button title="Edit Event" className="btn-sm">
+              <i className="fa-solid fa-pen-to-square fa-lg"></i>
+            </Button>
+          </div>
         </Card.Header>
         <Card.Body className="d-flex flex-column">
           <Card.Title>

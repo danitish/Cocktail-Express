@@ -19,6 +19,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import Meta from "../components/Meta";
 
 const Analytics = () => {
   const dispatch = useDispatch();
@@ -26,7 +27,6 @@ const Analytics = () => {
 
   const [eventYears, setEventYears] = useState();
   const [data, setData] = useState();
-
 
   useEffect(() => {
     const init = () => {
@@ -42,6 +42,7 @@ const Analytics = () => {
 
   return (
     <>
+      <Meta title="CE - Analytics" />
       <h3 className="my-3">Analytics Page</h3>
       <h5 className="mb-3">View your yearly profits by each month</h5>
       <div className="my-3">

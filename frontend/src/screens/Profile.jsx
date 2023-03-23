@@ -17,6 +17,7 @@ import { myEvents } from "../store/actions/eventActions";
 import { Link } from "react-router-dom";
 import { toastifyError, toastifySuccess } from "../utils/toastify";
 import { USER_UPDATE_RESET } from "../store/constants/userConstants";
+import Meta from "../components/Meta";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -78,6 +79,7 @@ const Profile = () => {
 
   return (
     <>
+      <Meta title="CE - My Profile" />
       {loading ? (
         <Loader />
       ) : error ? (
