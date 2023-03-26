@@ -163,6 +163,7 @@ const Event = () => {
               <tr>
                 <th>NAME</th>
                 <th>PRICE PER PERSON</th>
+                <th>TOTAL PRICE</th>
               </tr>
             </thead>
             <tbody>
@@ -175,6 +176,7 @@ const Event = () => {
                       ).name}
                   </td>
                   <td>{"₪" + item.price_per_person}</td>
+                  <td>{"₪" + item.price_per_person * event.attendance}</td>
                 </tr>
               ))}
             </tbody>
