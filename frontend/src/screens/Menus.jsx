@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import { toastifySuccess } from "../utils/toastify";
 import Meta from "../components/Meta";
 import { useSearchParams } from "react-router-dom";
-import ReturnToProfile from "../components/ReturnToProfile";
+import ReturnTo from "../components/ReturnTo";
 
 const Menus = () => {
   const [toggleMenuForm, setToggleMenuForm] = useState(false);
@@ -68,7 +68,7 @@ const Menus = () => {
   return (
     <>
       <Meta title="CE - My Menus" />
-      {profileRef && <ReturnToProfile />}
+      {profileRef && <ReturnTo section="profile" />}
       <FormToggler
         desc="Add a menu"
         state={toggleMenuForm}

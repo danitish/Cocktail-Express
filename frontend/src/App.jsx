@@ -19,6 +19,8 @@ import Analytics from "./screens/Analytics";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import EditEvent from "./screens/EditEvent";
+import NotFound from "./screens/NotFound";
 
 function App() {
   const { userInfo } = useSelector((state) => state.userLogin);
@@ -106,10 +108,26 @@ function App() {
                 }
               />
               <Route
+                path="/events/:id/edit"
+                element={
+                  <ProtectedRoute>
+                    <EditEvent />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/analytics"
                 element={
                   <ProtectedRoute>
                     <Analytics />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="*"
+                element={
+                  <ProtectedRoute>
+                    <NotFound />
                   </ProtectedRoute>
                 }
               />
