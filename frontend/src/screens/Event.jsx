@@ -176,7 +176,12 @@ const Event = () => {
                       ).name}
                   </td>
                   <td>{"₪" + item.price_per_person}</td>
-                  <td>{"₪" + item.price_per_person * event.attendance}</td>
+                  <td>
+                    "₪"
+                    {(item.price_per_person * event.attendance).toLocaleString(
+                      "en-US"
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
