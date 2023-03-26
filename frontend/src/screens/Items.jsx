@@ -19,7 +19,7 @@ import {
 import { popup } from "../utils/popups";
 import Meta from "../components/Meta";
 import { ADD_ITEM_RESET } from "../store/constants/itemConstants";
-import ReturnToProfile from "../components/ReturnToProfile";
+import ReturnTo from "../components/ReturnTo";
 
 const Items = () => {
   const dispatch = useDispatch();
@@ -87,7 +87,7 @@ const Items = () => {
   return (
     <>
       <Meta title="CE - My Items" />
-      {profileRef && <ReturnToProfile />}
+      {profileRef && <ReturnTo section="profile" />}
       <FormToggler
         desc="Add an item"
         state={toggleAddItemForm}

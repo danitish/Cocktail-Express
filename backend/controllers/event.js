@@ -41,6 +41,7 @@ const createEvent = asyncHandler(async (req, res) => {
     user_id: req.user._id,
     profit,
   });
+
   if (!event) {
     res.status(500);
     throw new Error("Internal issue");
@@ -50,7 +51,7 @@ const createEvent = asyncHandler(async (req, res) => {
 });
 
 const myEvents = asyncHandler(async (req, res) => {
-  const events = await Event.find({ user: req.user._id }).select("-__v");
+  const events = await Event.find({ user_id: req.user._id }).select("-__v");
 
   if (!events) {
     res.status(404);

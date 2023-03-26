@@ -15,7 +15,7 @@ const MenuCard = ({
   const navigate = useNavigate();
 
   return (
-    <Col sm={12} md={4} lg={3} className="mb-3 mb-md-0 mt-0 mt-lg-3">
+    <Col sm={12} md={6} lg={3} className="mb-3 mb-md-0 mt-md-3">
       <Card className="h-100 shadow-lg">
         <Card.Header></Card.Header>
         <Card.Body className="h-100 d-flex flex-column">

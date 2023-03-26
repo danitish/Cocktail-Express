@@ -28,7 +28,7 @@ import {
   ADD_EXPENSE_RESET,
   DELETE_EXPENSE_RESET,
 } from "../store/constants/expenseConstants";
-import ReturnToProfile from "../components/ReturnToProfile";
+import ReturnTo from "../components/ReturnTo";
 
 const Event = () => {
   const { id } = useParams();
@@ -141,7 +141,7 @@ const Event = () => {
   return (
     <>
       <Meta title={`CE - ${event ? event.event_name : "Event"}`} />
-      {profileRef && <ReturnToProfile />}
+      {profileRef && <ReturnTo section="profile" />}
       <Breadcrumb className="mb-4">
         <Breadcrumb.Item className="breadcrumb-non-active" href="/events">
           Events
