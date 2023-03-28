@@ -78,7 +78,7 @@ const Analytics = () => {
                   margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                 >
                   <XAxis dataKey="month" />
-                  <YAxis domain={[0, 200000]} />
+                  <YAxis domain={[0, 40000]} />
                   <CartesianGrid strokeDasharray="3 3" />
                   <Tooltip />
                   <Legend verticalAlign="top" iconType="rect" />
