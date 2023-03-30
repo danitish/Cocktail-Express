@@ -20,8 +20,11 @@ const createEvent = asyncHandler(async (req, res) => {
     const menu_items_by_menu_id = await Menu_Item.find({ menu_id }).select(
       "item_id price_per_person -_id"
     );
-    if (menu_items_by_menu_id) {
-      menu_details.menu_items = menu_items_by_menu_id;
+    const menu_items_by_menu_id_with_qty = menu_items_by_menu_id.map((item) => {
+      return { ...item, qty: 0 };
+    });
+    if (menu_items_by_menu_id_with_qty) {
+      menu_details.menu_items = menu_items_by_menu_id_with_qty;
     }
   }
 

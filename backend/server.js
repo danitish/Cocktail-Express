@@ -12,6 +12,7 @@ const expenseRouter = require("./routes/expense");
 const menuRouter = require("./routes/menu");
 const itemRouter = require("./routes/item");
 const menuItemRouter = require("./routes/menu_item");
+const noteRouter = require("./routes/note");
 
 require("dotenv").config();
 connectDB();
@@ -29,6 +30,7 @@ app.use("/api/expenses", expenseRouter);
 app.use("/api/menus", menuRouter);
 app.use("/api/items", itemRouter);
 app.use("/api/menu_items", menuItemRouter);
+app.use("/api/notes", noteRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));

@@ -7,7 +7,8 @@ const FormToggler = ({ desc, state, stateHandler, editIcon }) => {
         <Button
           onClick={() => stateHandler(!state)}
           variant
-          className="d-flex flex-column align-items-center mx-4 border-0 "
+          className="d-flex flex-column align-items-center mx-4 border-0"
+          style={{ width: 140 }}
         >
           <i className="fa-solid fa-xmark fa-3x" aria-hidden="true"></i>
           <span className="mt-2">Exit form</span>
@@ -17,6 +18,7 @@ const FormToggler = ({ desc, state, stateHandler, editIcon }) => {
           className="d-flex flex-column align-items-center mx-4 border-0 "
           onClick={() => stateHandler(!state)}
           variant
+          style={{ width: 140 }}
         >
           {editIcon ? (
             <i className="fa-regular fa-pen-to-square fa-2x"></i>

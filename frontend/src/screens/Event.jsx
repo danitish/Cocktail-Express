@@ -29,6 +29,12 @@ import {
   DELETE_EXPENSE_RESET,
 } from "../store/constants/expenseConstants";
 import ReturnTo from "../components/ReturnTo";
+import {
+  addNote,
+  getMyNotesByEventId,
+  deleteNote,
+} from "../store/actions/noteAction";
+import { ADD_NOTE_RESET } from "../store/constants/noteConstants";
 
 const Event = () => {
   const { id } = useParams();
@@ -40,6 +46,9 @@ const Event = () => {
   const dispatch = useDispatch();
 
   const [toggleExpenseForm, setToggleExpenseForm] = useState(false);
+  const [toggleNoteForm, setToggleNoteForm] = useState(false);
+  const [toggleMenuItemQtyForm, setToggleMenuItemQtyForm] = useState(false);
+  const [selectedMenuItemId, setSelectedMenuItemId] = useState("");
 
   const {
     loading: eventInfoLoading,
@@ -67,6 +76,21 @@ const Event = () => {
   const { success: updateProfitSuccess } = useSelector(
     (state) => state.updateEventProfit
   );
+  const {
+    loading: addNoteLoading,
+    error: addNoteError,
+    success: addNoteSuccess,
+  } = useSelector((state) => state.addNote);
+
+  const {
+    loading: myNotesLoading,
+    error: myNotesError,
+    notes,
+  } = useSelector((state) => state.getNotesByEvent);
+
+  const { error: deleteNoteError, success: deleteNoteSuccess } = useSelector(
+    (state) => state.deleteNote
+  );
 
   const form = useFormik({
     validateOnMount: true,
@@ -81,11 +105,25 @@ const Event = () => {
     },
   });
 
+  const noteForm = useFormik({
+    validateOnMount: true,
+    initialValues: {
+      text: "",
+    },
+    validate: validateFormikWithJoi({
+      text: Joi.string().required().label("Text"),
+    }),
+    onSubmit(values) {
+      dispatch(addNote({ ...values, event_id: id }));
+    },
+  });
+
   useEffect(() => {
     const init = () => {
       dispatch(getSingleEvent(id));
       dispatch(getExpensesByEventId(id));
       dispatch(getMyItems());
+      dispatch(getMyNotesByEventId(id));
     };
     init();
 
@@ -96,6 +134,12 @@ const Event = () => {
       form.values.qty = "";
       dispatch(updateEventProfit(id));
       dispatch({ type: ADD_EXPENSE_RESET });
+    }
+
+    if (addNoteSuccess) {
+      toastifySuccess("Note added");
+      noteForm.values.text = "";
+      dispatch({ type: ADD_NOTE_RESET });
     }
 
     if (deleteExpenseSuccess) {
@@ -114,6 +158,8 @@ const Event = () => {
     addExpenseSuccess,
     deleteExpenseSuccess,
     updateProfitSuccess,
+    addNoteSuccess,
+    deleteNoteSuccess,
   ]);
 
   let menuPPPTimesAttendance =
@@ -126,17 +172,23 @@ const Event = () => {
       ? expenses?.reduce((acc, exp) => acc + exp.total_price, 0)
       : 0;
 
-  const deleteExpenseHandler = (expense_id) => {
+  const deleteSubjectPopupRequest = (subject_id, cb, subject = "") => {
     popup(
-      "Delete an expense",
-      "Are you sure you want to delete the expense?",
+      `Delete ${subject}`,
+      `Are you sure you want to delete the ${subject}?`,
       () => {
-        dispatch(deleteExpense(expense_id));
-        toastifySuccess("Expense removed");
+        dispatch(cb(subject_id));
+        toastifySuccess(
+          `${
+            subject.charAt(0).toUpperCase() + subject.slice(1).toLowerCase()
+          } removed`
+        );
       },
       () => navigate(`/events/${id}`)
     );
   };
+
+  console.log(selectedMenuItemId);
 
   return (
     <>
@@ -163,6 +215,7 @@ const Event = () => {
               <tr>
                 <th>NAME</th>
                 <th>PRICE PER PERSON</th>
+                <th>QTY</th>
                 <th>TOTAL PRICE</th>
               </tr>
             </thead>
@@ -176,6 +229,14 @@ const Event = () => {
                       ).name}
                   </td>
                   <td>{"₪" + item.price_per_person}</td>
+                  <td
+                    onClick={() => {
+                      setSelectedMenuItemId(item._id);
+                      setToggleMenuItemQtyForm(true);
+                    }}
+                  >
+                    {item.qty}
+                  </td>
                   <td>
                     ₪
                     {(item.price_per_person * event.attendance).toLocaleString(
@@ -232,12 +293,12 @@ const Event = () => {
             </Form>
           </FormContainer>
         )}
-        <div className="expenses-table mt-5">
+        <div className="expenses-table">
           {expensesLoading && <Loader />}
           {expensesError && <Message>{expensesError}</Message>}
           {expenses && expenses.length !== 0 && (
             <>
-              <h4 className="mb-3">My Expenses</h4>
+              <h4 className="mb-3 mt-5">My Expenses</h4>
               <Table striped bordered hover responsive className="table-sm">
                 <thead>
                   <tr>
@@ -258,7 +319,13 @@ const Event = () => {
                       <td className="d-flex justify-content-center">
                         <Button
                           title="Delete Expense"
-                          onClick={() => deleteExpenseHandler(expense._id)}
+                          onClick={() =>
+                            deleteSubjectPopupRequest(
+                              expense._id,
+                              deleteExpense,
+                              "expense"
+                            )
+                          }
                         >
                           <i className="fa fa-trash" aria-hidden="true"></i>
                         </Button>
@@ -272,8 +339,69 @@ const Event = () => {
         </div>
       </div>
       <hr />
+      <div className="notes-section mt-4 ">
+        <FormToggler
+          desc="Add a note"
+          state={toggleNoteForm}
+          stateHandler={setToggleNoteForm}
+        />
+        {toggleNoteForm && (
+          <FormContainer>
+            {addNoteError && <Message>{addNoteError}</Message>}
+            {addNoteLoading && <Loader />}
+            <Form
+              noValidate
+              className="border border-dark rounded p-4"
+              onSubmit={noteForm.handleSubmit}
+            >
+              <Input
+                name="text"
+                label="Text"
+                error={noteForm.touched.text && noteForm.errors.text}
+                {...noteForm.getFieldProps("text")}
+              />
+              <Button
+                type="submit"
+                className="mt-4"
+                disabled={!noteForm.isValid}
+              >
+                Add Note
+              </Button>
+            </Form>
+          </FormContainer>
+        )}
+        <div className="notes">
+          {myNotesLoading && <Loader />}
+          {myNotesError && <Message className="mt-2">{myNotesError}</Message>}
+          {deleteNoteError && <Message>{deleteNoteError}</Message>}
+          {notes && notes.length !== 0 && (
+            <>
+              <h4 className="mb-3 mt-5">
+                My Notes{" "}
+                <span className="text-muted" style={{ fontSize: "smaller" }}>
+                  (click on note to remove)
+                </span>
+              </h4>
+              <ListGroup className="mb-4" as="ol" numbered>
+                {notes.map((note) => (
+                  <ListGroup.Item
+                    onClick={() => {
+                      deleteSubjectPopupRequest(note._id, deleteNote, "note");
+                    }}
+                    key={note._id}
+                    as="li"
+                  >
+                    {note.text}
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            </>
+          )}
+        </div>
+      </div>
+      <hr />
       <div className="total-pricing mt-4">
-        <h4>Calculations:</h4>
+        <h4>Calculations</h4>
         <ListGroup variant="flush">
           <ListGroup.Item>
             <span className="fw-bold">Attendance: </span>

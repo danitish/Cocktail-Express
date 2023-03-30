@@ -34,6 +34,11 @@ import {
   getExpensesByEventReducer,
   deleteExpenseReducer,
 } from "./reducers/expenseReducers";
+import {
+  addNoteReducer,
+  getNotesByEventReducer,
+  deleteNoteReducer,
+} from "./reducers/noteReducers";
 
 const reducer = {
   userLogin: userLoginReducer,
@@ -59,6 +64,9 @@ const reducer = {
   addExpense: addExpenseReducer,
   getExpensesByEvent: getExpensesByEventReducer,
   deleteExpense: deleteExpenseReducer,
+  addNote: addNoteReducer,
+  getNotesByEvent: getNotesByEventReducer,
+  deleteNote: deleteNoteReducer,
 };
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

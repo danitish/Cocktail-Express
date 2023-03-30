@@ -32,6 +32,11 @@ const schema = new mongoose.Schema(
             required: false,
             default: 0,
           },
+          qty: {
+            type: Number,
+            required: false,
+            default: 0,
+          },
         },
       ],
     },
