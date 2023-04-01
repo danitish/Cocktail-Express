@@ -103,23 +103,26 @@ const Menus = () => {
         </FormContainer>
       )}
       <hr />
-      <h3 className="my-3">My Menus</h3>
+
       <Row>
         {myMenusLoading && <Loader />}
         {myMenusError && <Message>{myMenusError}</Message>}
         {deleteMenuLoading && <Loader />}
         {deleteMenuError && <Message>{deleteMenuError}</Message>}
-        {menus ? (
-          menus.map((menu) => (
-            <MenuCard
-              name={menu.name}
-              description={menu.description}
-              price_per_person={menu.price_per_person.toFixed(2)}
-              id={menu._id}
-              key={menu._id}
-              deleteMenuHandler={deleteMenu}
-            />
-          ))
+        {menus && menus.length ? (
+          <>
+            <h3 className="my-3">My Menus</h3>
+            {menus.map((menu) => (
+              <MenuCard
+                name={menu.name}
+                description={menu.description}
+                price_per_person={menu.price_per_person.toFixed(2)}
+                id={menu._id}
+                key={menu._id}
+                deleteMenuHandler={deleteMenu}
+              />
+            ))}
+          </>
         ) : (
           <h5>No menus found</h5>
         )}

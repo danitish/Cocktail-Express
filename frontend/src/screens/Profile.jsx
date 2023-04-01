@@ -102,7 +102,7 @@ const Profile = () => {
                       <Link
                         className="link-style"
                         to={`/events/${
-                          events[events.length - 1]._id
+                          events[events.length - 1]?._id
                         }?ref=profile`}
                       >
                         <span>Go to latest event</span>
