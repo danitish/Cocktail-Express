@@ -28,6 +28,7 @@ import {
   getSingleEventReducer,
   deleteEventReducer,
   updateEventProfitReducer,
+  updateEventMenuItemQtyReducer,
 } from "./reducers/eventReducers";
 import {
   addExpenseReducer,
@@ -61,6 +62,7 @@ const reducer = {
   getSingleEvent: getSingleEventReducer,
   deleteEvent: deleteEventReducer,
   updateEventProfit: updateEventProfitReducer,
+  updateEventMenuItemQty: updateEventMenuItemQtyReducer,
   addExpense: addExpenseReducer,
   getExpensesByEvent: getExpensesByEventReducer,
   deleteExpense: deleteExpenseReducer,

@@ -23,9 +23,7 @@ const Profile = () => {
   const dispatch = useDispatch();
 
   const { loading, user, error } = useSelector((state) => state.userProfile);
-  const { events, error: myEventsError } = useSelector(
-    (state) => state.myEvents
-  );
+  const { events } = useSelector((state) => state.myEvents);
   const {
     error: userUpdateError,
     loading: userUpdateLoading,
@@ -95,19 +93,15 @@ const Profile = () => {
               </div>
               <ListGroup className="mt-2" variant="flush">
                 <ListGroup.Item>
-                  {myEventsError ? (
+                  {!events?.length ? (
                     <span className="text-muted">Latest Event</span>
                   ) : (
-                    events && (
-                      <Link
-                        className="link-style"
-                        to={`/events/${
-                          events[events.length - 1]?._id
-                        }?ref=profile`}
-                      >
-                        <span>Go to latest event</span>
-                      </Link>
-                    )
+                    <Link
+                      className="link-style"
+                      to={`/events/${events[0]?._id}?ref=profile`}
+                    >
+                      <span>Go to latest event</span>
+                    </Link>
                   )}
                 </ListGroup.Item>
                 <ListGroup.Item>

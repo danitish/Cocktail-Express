@@ -17,6 +17,7 @@ import EventCard from "../components/EventCard";
 import { popup } from "../utils/popups";
 import { useNavigate } from "react-router-dom";
 import Meta from "../components/Meta";
+import { ADD_EVENT_RESET } from "../store/constants/eventConstants";
 
 const Events = () => {
   const [toggleEventForm, setToggleEventForm] = useState(false);
@@ -47,10 +48,12 @@ const Events = () => {
     if (success) {
       toastifySuccess("Event added!");
       form.values.event_date = "";
+      form.values.event_location = "";
       form.values.estimated_income = "";
       form.values.attendance = "";
       form.values.event_name = "";
       form.values.menu_id = "";
+      dispatch({ type: ADD_EVENT_RESET });
     }
   }, [dispatch, success, deleteEventSuccess]);
 
@@ -59,6 +62,7 @@ const Events = () => {
     initialValues: {
       event_name: "",
       event_date: "",
+      event_location: "",
       attendance: "",
       estimated_income: "",
       menu_id: "",
@@ -66,6 +70,7 @@ const Events = () => {
     validate: validateFormikWithJoi({
       event_name: Joi.string().required().label("Event name"),
       event_date: Joi.date().required().label("Event date"),
+      event_location: Joi.string().required().label("Event location"),
       attendance: Joi.number().required().label("Attendance"),
       estimated_income: Joi.number().required().label("Estimated income"),
       menu_id: Joi.string().label("Menu").required(),
@@ -123,6 +128,12 @@ const Events = () => {
               {...form.getFieldProps("event_date")}
             />
             <Input
+              name="location"
+              label="Location"
+              error={form.touched.event_location && form.errors.event_location}
+              {...form.getFieldProps("event_location")}
+            />
+            <Input
               type="number"
               name="attendance"
               label="Attendance"
@@ -175,6 +186,7 @@ const Events = () => {
                 name={event.event_name}
                 attendance={event.attendance}
                 date={event.event_date}
+                location={event.event_location}
                 income={event.estimated_income}
                 menu_name={
                   menus

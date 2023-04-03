@@ -49,6 +49,10 @@ const schema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    event_location: {
+      type: String,
+      required: true,
+    },
     estimated_income: {
       type: Number,
       required: true,

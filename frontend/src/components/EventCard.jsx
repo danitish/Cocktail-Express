@@ -6,6 +6,7 @@ const EventCard = ({
   date,
   income,
   menu_name,
+  location,
   attendance,
   id,
   deleteEventHandler,
@@ -39,6 +40,11 @@ const EventCard = ({
           <Card.Title>
             <span className="lead">{name}</span>
           </Card.Title>
+          <hr />
+          <Card.Text className="mb-0">
+            <i className="fa-solid fa-location-dot me-2"></i>
+            {location}
+          </Card.Text>
           <ListGroup className="list-group-flush py-2 my-3 flex-fill">
             <ListGroup.Item>
               <span style={{ letterSpacing: 1 }}>

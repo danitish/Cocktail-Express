@@ -5,8 +5,14 @@ const Expense = require("../models/expense");
 const asyncHandler = require("express-async-handler");
 
 const createEvent = asyncHandler(async (req, res) => {
-  const { event_name, event_date, estimated_income, menu_id, attendance } =
-    req.body;
+  const {
+    event_name,
+    event_date,
+    estimated_income,
+    menu_id,
+    attendance,
+    event_location,
+  } = req.body;
 
   let menu_details = {};
   let profit = 0;
@@ -37,6 +43,7 @@ const createEvent = asyncHandler(async (req, res) => {
   const event = await Event.create({
     event_name,
     event_date,
+    event_location,
     estimated_income,
     menu_id,
     menu_details,
@@ -60,8 +67,9 @@ const myEvents = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("No events found");
   }
+
   res.status(200);
-  res.send(events);
+  res.send(events.reverse());
 });
 
 const getEventById = asyncHandler(async (req, res) => {
@@ -128,10 +136,39 @@ const updateProfit = asyncHandler(async (req, res) => {
   res.send("Profit was successfully edited");
 });
 
+const updateMenuItemQty = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { qty, item_id } = req.body;
+
+  if (!id | isNaN(qty) || !item_id) {
+    res.status(400);
+    throw new Error("Insufficient values provided");
+  }
+  const event = await Event.findById(id);
+  if (!event) {
+    res.status(404);
+    throw new Error("No matching event found");
+  }
+
+  const targetedItem = event.menu_details.menu_items.find(
+    (item) => item._id == item_id
+  );
+
+  if (!targetedItem) {
+    res.status(404);
+    throw new Error("No matching menu item found");
+  }
+  targetedItem.qty = qty;
+  await event.save();
+  res.status(200);
+  res.send("Updated successfully");
+});
+
 module.exports = {
   createEvent,
   myEvents,
   getEventById,
   deleteEvent,
   updateProfit,
+  updateMenuItemQty,
 };

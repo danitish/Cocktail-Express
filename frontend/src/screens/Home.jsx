@@ -1,19 +1,22 @@
 import "../style/home.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Button } from "react-bootstrap";
+import { Button, Badge, ListGroup } from "react-bootstrap";
 import { useEffect } from "react";
 import { getMyMenus } from "../store/actions/menuActions";
 import { getMyItems } from "../store/actions/itemActions";
 import { myEvents } from "../store/actions/eventActions";
 import { Link } from "react-router-dom";
 import Meta from "../components/Meta";
+import Loader from "../components/Loader";
 
 const Home = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
-  const { menus } = useSelector((state) => state.myMenus);
-  const { items } = useSelector((state) => state.myItems);
-  const { events } = useSelector((state) => state.myEvents);
+  const { menus, loading: menusLoad } = useSelector((state) => state.myMenus);
+  const { items, loading: itemsLoad } = useSelector((state) => state.myItems);
+  const { events, loading: eventsLoad } = useSelector(
+    (state) => state.myEvents
+  );
 
   const data_section_info = [
     {
@@ -36,6 +39,12 @@ const Home = () => {
     },
   ];
 
+  const updateNotes = [
+    "Added qty feature to event menu items table.",
+    "Added location in event creation form.",
+    "Added Notes feature in event page - add/remove.",
+  ];
+
   const [hour, setHour] = useState(new Date().getHours());
 
   const dispatch = useDispatch();
@@ -49,27 +58,43 @@ const Home = () => {
     init();
   }, []);
 
+  if (menusLoad || eventsLoad || itemsLoad) {
+    return (
+      <div className="d-flex align-items-center  min-vh-100">
+        <Loader />
+      </div>
+    );
+  }
+
   return (
     <>
       <Meta />
-      <Row>
-        <header>
-          <h4 className="header my-3 fade-in-image">
-            Good{" "}
-            {hour >= 6 && hour < 12
-              ? "Morning, "
-              : hour >= 12 && hour < 18
-              ? "Afternoon, "
-              : hour >= 18 && hour < 22
-              ? "Evening, "
-              : hour >= 22
-              ? "Night, "
-              : ""}
-            {userInfo?.full_name.split(" ")[0]}.
-          </h4>
-        </header>
-      </Row>
+      <header>
+        <h4 className="header my-3 fade-in-image">
+          Good{" "}
+          {hour >= 6 && hour < 12
+            ? "Morning, "
+            : hour >= 12 && hour < 18
+            ? "Afternoon, "
+            : hour >= 18 && hour < 22
+            ? "Evening, "
+            : hour >= 22
+            ? "Night, "
+            : ""}
+          {userInfo?.full_name.split(" ")[0]}.
+        </h4>
+      </header>
       <hr />
+      <h4>
+        <Badge bg="info" className="mt-2">
+          Updates: <span className="ms-1">(03.04.23)</span>
+        </Badge>
+      </h4>
+      <ul>
+        {updateNotes.map((note) => (
+          <li className="my-1">{note}</li>
+        ))}
+      </ul>
       <div className="my-data d-flex p-5 my-5 align-items-center">
         <h4 className="my-data-title d-none d-md-block">Biz By Numbers</h4>
         <div className="vl d-none d-md-block"></div>
@@ -89,7 +114,7 @@ const Home = () => {
       </div>
       <div className="d-flex justify-content-center align-items-center">
         <Link to="/analytics">
-          <Button className="p-3">
+          <Button className="p-3 mb-3">
             <span className="lead">Click to re-direct to full analytics</span>
           </Button>
         </Link>

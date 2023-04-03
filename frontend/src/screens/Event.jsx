@@ -10,6 +10,7 @@ import validateFormikWithJoi from "../utils/validateFormikWithJoi";
 import { toastifySuccess } from "../utils/toastify";
 import {
   getSingleEvent,
+  updateEventMenuItemQty,
   updateEventProfit,
 } from "../store/actions/eventActions";
 import Message from "../components/Message";
@@ -92,6 +93,12 @@ const Event = () => {
     (state) => state.deleteNote
   );
 
+  const {
+    loading: updateItemQtyLoading,
+    success: updateItemQtySuccess,
+    error: updateItemQtyError,
+  } = useSelector((state) => state.updateEventMenuItemQty);
+
   const form = useFormik({
     validateOnMount: true,
     initialValues: { name: "", qty: "", price_per_unit: "" },
@@ -115,6 +122,19 @@ const Event = () => {
     }),
     onSubmit(values) {
       dispatch(addNote({ ...values, event_id: id }));
+    },
+  });
+
+  const menuItemQtyForm = useFormik({
+    validateOnMount: true,
+    initialValues: {
+      qty: "",
+    },
+    validate: validateFormikWithJoi({
+      qty: Joi.number().required().label("Quantity"),
+    }),
+    onSubmit(values) {
+      dispatch(updateEventMenuItemQty(id, selectedMenuItemId, values.qty));
     },
   });
 
@@ -146,6 +166,9 @@ const Event = () => {
       dispatch(updateEventProfit(id));
       dispatch({ type: DELETE_EXPENSE_RESET });
     }
+    if (updateItemQtySuccess) {
+      toastifySuccess("Qty updated");
+    }
 
     return () => {
       if (event) {
@@ -160,6 +183,7 @@ const Event = () => {
     updateProfitSuccess,
     addNoteSuccess,
     deleteNoteSuccess,
+    updateItemQtySuccess,
   ]);
 
   let menuPPPTimesAttendance =
@@ -188,8 +212,6 @@ const Event = () => {
     );
   };
 
-  console.log(selectedMenuItemId);
-
   return (
     <>
       <Meta title={`CE - ${event ? event.event_name : "Event"}`} />
@@ -202,6 +224,48 @@ const Event = () => {
           {event ? event.event_name : id}
         </Breadcrumb.Item>
       </Breadcrumb>
+      {toggleMenuItemQtyForm && (
+        <>
+          <Button
+            onClick={() => {
+              setToggleMenuItemQtyForm(false);
+              setSelectedMenuItemId("");
+            }}
+            variant
+            className="d-flex flex-column align-items-center mx-4 border-0"
+            style={{ width: 140 }}
+          >
+            <i className="fa-solid fa-xmark fa-3x" aria-hidden="true"></i>
+            <span className="mt-2">Exit form</span>
+          </Button>
+          <FormContainer>
+            {updateItemQtyLoading && <Loader />}
+            {updateItemQtyError && <Message>{updateItemQtyError}</Message>}
+            <Form
+              className="border border-dark rounded p-4"
+              noValidate
+              onSubmit={menuItemQtyForm.handleSubmit}
+            >
+              <Input
+                name="qty"
+                type="number"
+                label="Qty"
+                error={
+                  menuItemQtyForm.touched.qty && menuItemQtyForm.errors.qty
+                }
+                {...menuItemQtyForm.getFieldProps("qty")}
+              />
+              <Button
+                type="submit"
+                className="mt-4"
+                disabled={!menuItemQtyForm.isValid}
+              >
+                Update
+              </Button>
+            </Form>
+          </FormContainer>
+        </>
+      )}
       {eventInfoLoading && <Loader />}
       {eventInfoError && <Message>{eventInfoError}</Message>}
       {event && event.menu_id && (
@@ -234,8 +298,13 @@ const Event = () => {
                       setSelectedMenuItemId(item._id);
                       setToggleMenuItemQtyForm(true);
                     }}
+                    className="d-flex"
                   >
-                    {item.qty}
+                    {item.qty ? (
+                      item.qty
+                    ) : (
+                      <Button className="btn-sm">Add</Button>
+                    )}
                   </td>
                   <td>
                     ₪

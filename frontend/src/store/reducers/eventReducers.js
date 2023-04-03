@@ -1,6 +1,7 @@
 import {
   ADD_EVENT_FAIL,
   ADD_EVENT_REQUEST,
+  ADD_EVENT_RESET,
   ADD_EVENT_SUCCESS,
   DELETE_EVENT_FAIL,
   DELETE_EVENT_REQUEST,
@@ -12,6 +13,10 @@ import {
   MY_EVENTS_FAIL,
   MY_EVENTS_REQUEST,
   MY_EVENTS_SUCCESS,
+  UPDATE_EVENT_MENUITEMQTY_FAIL,
+  UPDATE_EVENT_MENUITEMQTY_REQUEST,
+  UPDATE_EVENT_MENUITEMQTY_RESET,
+  UPDATE_EVENT_MENUITEMQTY_SUCCESS,
   UPDATE_PROFIT_FAIL,
   UPDATE_PROFIT_REQUEST,
   UPDATE_PROFIT_SUCCESS,
@@ -38,6 +43,8 @@ export const addEventReducer = (state = {}, action) => {
       return { loading: false, success: true };
     case ADD_EVENT_FAIL:
       return { loading: false, error: action.payload };
+    case ADD_EVENT_RESET:
+      return {};
     default:
       return state;
   }
@@ -79,6 +86,21 @@ export const updateEventProfitReducer = (state = {}, action) => {
       return { loading: false, success: true };
     case UPDATE_PROFIT_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const updateEventMenuItemQtyReducer = (state = {}, action) => {
+  switch (action.type) {
+    case UPDATE_EVENT_MENUITEMQTY_REQUEST:
+      return { loading: true };
+    case UPDATE_EVENT_MENUITEMQTY_SUCCESS:
+      return { loading: false, success: true };
+    case UPDATE_EVENT_MENUITEMQTY_FAIL:
+      return { loading: false, error: action.payload };
+    case UPDATE_EVENT_MENUITEMQTY_RESET:
+      return {};
     default:
       return state;
   }
