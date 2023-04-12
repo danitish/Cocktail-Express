@@ -40,7 +40,6 @@ const schema = new mongoose.Schema(
         },
       ],
     },
-
     event_name: {
       type: String,
       required: true,
@@ -50,8 +49,9 @@ const schema = new mongoose.Schema(
       required: true,
     },
     event_location: {
-      type: String,
-      required: true,
+      address: { type: String, required: true },
+      lat: { type: String, required: true },
+      lng: { type: String, required: true },
     },
     estimated_income: {
       type: Number,

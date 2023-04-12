@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Form, Button, Row } from "react-bootstrap";
 import FormToggler from "../components/FormToggler";
 import FormContainer from "../components/FormContainer";
@@ -7,7 +7,6 @@ import { useFormik } from "formik";
 import Joi from "joi";
 import validateFormikWithJoi from "../utils/validateFormikWithJoi";
 import { toastifySuccess, toastifyError } from "../utils/toastify";
-import { useEffect } from "react";
 import { getMyMenus } from "../store/actions/menuActions";
 import { useDispatch, useSelector } from "react-redux";
 import { addEvent, myEvents, deleteEvent } from "../store/actions/eventActions";
@@ -18,9 +17,16 @@ import { popup } from "../utils/popups";
 import { useNavigate } from "react-router-dom";
 import Meta from "../components/Meta";
 import { ADD_EVENT_RESET } from "../store/constants/eventConstants";
+import httpService from "../services/httpService";
+import { Loader as googleLoader } from "@googlemaps/js-api-loader";
 
 const Events = () => {
   const [toggleEventForm, setToggleEventForm] = useState(false);
+  const [mapsKey, setMapsKey] = useState("");
+  const [lat, setLat] = useState("");
+  const [lng, setLng] = useState("");
+
+  const locationInputRef = useRef(null);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,31 +44,107 @@ const Events = () => {
     error: deleteEventError,
   } = useSelector((state) => state.deleteEvent);
 
+  const extractAddress = (place) => {
+    const address = {
+      number: "",
+      street: "",
+      city: "",
+    };
+    if (!Array.isArray(place?.address_components)) {
+      return address;
+    }
+    place.address_components.map((component) => {
+      const types = component.types;
+      const value = component.long_name;
+
+      if (types.includes("locality")) {
+        address.city = value;
+      }
+      if (types.includes("street_number")) {
+        address.number = value;
+      }
+      if (types.includes("route")) {
+        address.street = value;
+      }
+    });
+
+    let full_address = "";
+    if (address.street) {
+      full_address += address.street;
+    }
+    if (address.number) {
+      full_address = full_address + " " + address.number;
+    }
+    if (address.city) {
+      if (!address.street && !address.number) {
+        full_address = address.city;
+      } else {
+        full_address = full_address + ", " + address.city;
+      }
+    }
+    return full_address;
+  };
+
+  const onChangeAddress = (autocomplete) => {
+    const place = autocomplete.getPlace();
+    const address = extractAddress(place);
+    form.setFieldValue("event_address", address);
+    setLat(place.geometry.location.lat());
+    setLng(place.geometry.location.lng());
+  };
+
   useEffect(() => {
-    const init = () => {
+    const init = async () => {
       dispatch(getMyMenus());
       dispatch(myEvents());
+      if (!mapsKey) {
+        const { data } = await httpService.get("/api/config/googlemaps");
+        setMapsKey(data);
+      }
     };
     init();
+    if (!window.google && mapsKey && toggleEventForm) {
+      const googleApiLoader = new googleLoader({
+        apiKey: mapsKey,
+        version: "weekly",
+        libraries: ["places"],
+        language: "he",
+      });
+      const options = {
+        componentRestrictions: { country: "il" },
+      };
+      googleApiLoader.load().then((google) => {
+        const autocomplete = new google.maps.places.Autocomplete(
+          locationInputRef.current,
+          options
+        );
+        autocomplete.setFields(["address_component", "geometry"]);
+        autocomplete.addListener("place_changed", () =>
+          onChangeAddress(autocomplete)
+        );
+      });
+    }
 
     if (success) {
       toastifySuccess("Event added!");
       form.values.event_date = "";
-      form.values.event_location = "";
+      form.values.event_address = "";
       form.values.estimated_income = "";
       form.values.attendance = "";
       form.values.event_name = "";
       form.values.menu_id = "";
+      setLat("");
+      setLng("");
       dispatch({ type: ADD_EVENT_RESET });
     }
-  }, [dispatch, success, deleteEventSuccess]);
+  }, [dispatch, success, deleteEventSuccess, mapsKey, toggleEventForm]);
 
   const form = useFormik({
     validateOnMount: true,
     initialValues: {
       event_name: "",
       event_date: "",
-      event_location: "",
+      event_address: "",
       attendance: "",
       estimated_income: "",
       menu_id: "",
@@ -70,7 +152,7 @@ const Events = () => {
     validate: validateFormikWithJoi({
       event_name: Joi.string().required().label("Event name"),
       event_date: Joi.date().required().label("Event date"),
-      event_location: Joi.string().required().label("Event location"),
+      event_address: Joi.string().required().label("Event location"),
       attendance: Joi.number().required().label("Attendance"),
       estimated_income: Joi.number().required().label("Estimated income"),
       menu_id: Joi.string().label("Menu").required(),
@@ -81,9 +163,9 @@ const Events = () => {
         return;
       }
       if (values.menu_id === "No menu") {
-        dispatch(addEvent({ ...values, menu_id: null }));
+        dispatch(addEvent({ ...values, lat, lng, menu_id: null }));
       }
-      dispatch(addEvent(values));
+      dispatch(addEvent({ ...values, lat, lng }));
     },
   });
 
@@ -97,6 +179,7 @@ const Events = () => {
       () => navigate("/events")
     );
   };
+
   return (
     <>
       <Meta title="CE - My Events" />
@@ -130,9 +213,11 @@ const Events = () => {
             <Input
               name="location"
               label="Location"
-              error={form.touched.event_location && form.errors.event_location}
-              {...form.getFieldProps("event_location")}
+              error={form.touched.event_address && form.errors.event_address}
+              {...form.getFieldProps("event_address")}
+              ref={locationInputRef}
             />
+
             <Input
               type="number"
               name="attendance"
