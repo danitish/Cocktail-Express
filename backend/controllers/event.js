@@ -11,7 +11,9 @@ const createEvent = asyncHandler(async (req, res) => {
     estimated_income,
     menu_id,
     attendance,
-    event_location,
+    event_address,
+    lat,
+    lng,
   } = req.body;
 
   let menu_details = {};
@@ -39,6 +41,8 @@ const createEvent = asyncHandler(async (req, res) => {
   } else {
     profit = estimated_income;
   }
+
+  const event_location = { address: event_address, lat, lng };
 
   const event = await Event.create({
     event_name,

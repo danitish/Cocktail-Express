@@ -40,9 +40,8 @@ const Home = () => {
   ];
 
   const updateNotes = [
-    "Added qty feature to event menu items table.",
-    "Added location in event creation form.",
-    "Added Notes feature in event page - add/remove.",
+    "Implemented Google Maps Autocomplete when entering an event location in form.",
+    "Added Waze re-direct in each event card.",
   ];
 
   const [hour, setHour] = useState(new Date().getHours());
@@ -87,12 +86,14 @@ const Home = () => {
       <hr />
       <h4>
         <Badge bg="info" className="mt-2">
-          Updates: <span className="ms-1">(03.04.23)</span>
+          Updates: <span className="ms-1">(12.04.23)</span>
         </Badge>
       </h4>
       <ul>
         {updateNotes.map((note) => (
-          <li className="my-1">{note}</li>
+          <li className="my-1" key={note}>
+            {note}
+          </li>
         ))}
       </ul>
       <div className="my-data d-flex p-5 my-5 align-items-center">

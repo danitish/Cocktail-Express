@@ -32,6 +32,10 @@ app.use("/api/items", itemRouter);
 app.use("/api/menu_items", menuItemRouter);
 app.use("/api/notes", noteRouter);
 
+app.get("/api/config/googlemaps", (req, res) => {
+  res.send(process.env.GOOGLE_KEY);
+});
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));
   app.get("*", (req, res) => {

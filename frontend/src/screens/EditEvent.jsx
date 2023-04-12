@@ -24,6 +24,7 @@ const EditEvent = () => {
     initialValues: {
       event_name: "",
       event_date: "",
+      event_location: "",
       attendance: "",
       estimated_income: "",
       menu_id: "",
@@ -31,6 +32,7 @@ const EditEvent = () => {
     validate: validateFormikWithJoi({
       event_name: Joi.string().label("Event name").allow(""),
       event_date: Joi.date().label("Event date").allow(""),
+      event_location: Joi.string().label("Event location").allow(""),
       attendance: Joi.number().label("Attendance").allow(""),
       estimated_income: Joi.number().label("Estimated income").allow(""),
       menu_id: Joi.string().label("Menu").allow(""),
@@ -73,6 +75,13 @@ const EditEvent = () => {
             label="Date"
             error={form.touched.event_date && form.errors.event_date}
             {...form.getFieldProps("event_date")}
+          />
+          <Input
+            name="location"
+            label="Location"
+            placeholder={event ? event.event_location : "Location"}
+            error={form.touched.event_location && form.errors.event_location}
+            {...form.getFieldProps("event_location")}
           />
           <Input
             type="number"

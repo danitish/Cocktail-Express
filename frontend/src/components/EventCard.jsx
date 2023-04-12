@@ -41,9 +41,20 @@ const EventCard = ({
             <span className="lead">{name}</span>
           </Card.Title>
           <hr />
-          <Card.Text className="mb-0">
-            <i className="fa-solid fa-location-dot me-2"></i>
-            {location}
+          <Card.Text className="mb-0 ms-auto">
+            {location.address}
+            <i className="fa-solid fa-location-dot ms-2 fa-lg"></i>
+          </Card.Text>
+          <Card.Text className="ms-auto mb-0 mt-2">
+            <a
+              href={`https://www.waze.com/ul?ll=${location.lat},${location.lng}&navigate=yes`}
+              target="_blank"
+              style={{ textDecoration: "none", color: "black" }}
+              className="ms-0"
+            >
+              <span>Open Waze</span>
+              <i className="fa-brands fa-waze fa-lg ms-2"></i>
+            </a>
           </Card.Text>
           <ListGroup className="list-group-flush py-2 my-3 flex-fill">
             <ListGroup.Item>
