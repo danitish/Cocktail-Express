@@ -1,7 +1,7 @@
 import "../style/home.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Badge, ListGroup } from "react-bootstrap";
+import { Button, Badge } from "react-bootstrap";
 import { useEffect } from "react";
 import { getMyMenus } from "../store/actions/menuActions";
 import { getMyItems } from "../store/actions/itemActions";
@@ -55,7 +55,7 @@ const Home = () => {
       dispatch(myEvents());
     };
     init();
-  }, []);
+  }, [dispatch]);
 
   if (menusLoad || eventsLoad || itemsLoad) {
     return (

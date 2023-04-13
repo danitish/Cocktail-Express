@@ -53,7 +53,7 @@ const Events = () => {
     if (!Array.isArray(place?.address_components)) {
       return address;
     }
-    place.address_components.map((component) => {
+    place.address_components.forEach((component) => {
       const types = component.types;
       const value = component.long_name;
 

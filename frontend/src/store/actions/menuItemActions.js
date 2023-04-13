@@ -5,6 +5,9 @@ import {
   GET_MENUITEMS_FAIL,
   GET_MENUITEMS_REQUEST,
   GET_MENUITEMS_SUCCESS,
+  REMOVE_MENUITEM_FAIL,
+  REMOVE_MENUITEM_REQUEST,
+  REMOVE_MENUITEM_SUCCESS,
 } from "../constants/menuItemConstants";
 
 import httpService from "../../services/httpService";
@@ -65,6 +68,33 @@ export const getMenuItems = (menu_id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: GET_MENUITEMS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const removeMenuItem = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: REMOVE_MENUITEM_REQUEST });
+    const {
+      userLogin: {
+        userInfo: { token },
+      },
+    } = getState();
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+    await httpService.delete(`/api/menu_items/${id}`, config);
+    dispatch({ type: REMOVE_MENUITEM_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: REMOVE_MENUITEM_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

@@ -1,6 +1,7 @@
 import {
   ADD_MENUITEM_FAIL,
   ADD_MENUITEM_REQUEST,
+  ADD_MENUITEM_RESET,
   ADD_MENUITEM_SUCCESS,
   GET_MENUITEMS_FAIL,
   GET_MENUITEMS_REQUEST,
@@ -18,7 +19,8 @@ export const addMenuItemReducer = (state = {}, action) => {
       return { loading: false, success: true };
     case ADD_MENUITEM_FAIL:
       return { loading: false, error: action.payload };
-
+    case ADD_MENUITEM_RESET:
+      return {};
     default:
       return state;
   }

@@ -9,7 +9,10 @@ import validateFormikWithJoi from "../utils/validateFormikWithJoi";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { updateMenuRatio } from "../store/actions/menuActions";
+import {
+  updateMenuPricePerPerson,
+  updateMenuRatio,
+} from "../store/actions/menuActions";
 import { useEffect } from "react";
 import { toastifySuccess } from "../utils/toastify";
 
@@ -22,6 +25,7 @@ const RatioUpdate = ({ menu, menuPageStateHandler }) => {
   useEffect(() => {
     if (success) {
       toastifySuccess("Ratio updated");
+      dispatch(updateMenuPricePerPerson(menu._id));
       menuPageStateHandler((prevState) => !prevState);
     }
   }, [dispatch, success]);

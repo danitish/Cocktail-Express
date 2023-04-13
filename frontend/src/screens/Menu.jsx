@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { Button, Breadcrumb, Form, Table } from "react-bootstrap";
@@ -18,12 +18,19 @@ import Joi from "joi";
 import { useFormik } from "formik";
 import validateFormikWithJoi from "../utils/validateFormikWithJoi";
 import { toastifyError, toastifySuccess } from "../utils/toastify";
-import { addMenuItem, getMenuItems } from "../store/actions/menuItemActions";
+import {
+  addMenuItem,
+  getMenuItems,
+  removeMenuItem,
+} from "../store/actions/menuItemActions";
 import Meta from "../components/Meta";
+import { popup } from "../utils/popups";
+import { ADD_MENUITEM_RESET } from "../store/constants/menuItemConstants";
 
 const Menu = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { loading, error, success } = useSelector((state) => state.addMenuItem);
   const { items } = useSelector((state) => state.myItems);
@@ -33,6 +40,9 @@ const Menu = () => {
     error: menuItemsError,
     loading: menuItemsLoading,
   } = useSelector((state) => state.menuItems);
+
+  const { success: removeMenuItemSuccess, error: removeMenuItemError } =
+    useSelector((state) => state.removeMenuItem);
 
   const [toggleAddItemForm, setToggleAddItemForm] = useState(false);
   const [ratioUpdated, setRatioUpdate] = useState(false);
@@ -48,11 +58,12 @@ const Menu = () => {
     if (success) {
       toastifySuccess("Added successfully");
       dispatch(updateMenuPricePerPerson(id));
+      dispatch({ type: ADD_MENUITEM_RESET });
     }
-    if (ratioUpdated) {
+    if (removeMenuItemSuccess) {
       dispatch(updateMenuPricePerPerson(id));
     }
-  }, [dispatch, success, id, ratioUpdated]);
+  }, [dispatch, success, id, ratioUpdated, removeMenuItemSuccess]);
 
   const form = useFormik({
     initialValues: {
@@ -72,6 +83,18 @@ const Menu = () => {
     },
   });
 
+  const removeItemHandler = (item_id) => {
+    popup(
+      "Remove an item",
+      "Are you sure you want to remove the item?",
+      () => {
+        dispatch(removeMenuItem(item_id));
+        toastifySuccess("Item removed");
+      },
+      () => navigate(`/menus/${id}`)
+    );
+  };
+
   return (
     <>
       <Meta title={`CE - ${menu ? menu.name : "Menu"}`} />
@@ -82,6 +105,7 @@ const Menu = () => {
         <Breadcrumb.Item active>{menu ? menu.name : id}</Breadcrumb.Item>
       </Breadcrumb>
       <RatioUpdate
+        menu_id={id}
         menu={menu}
         menuPageState={ratioUpdated}
         menuPageStateHandler={setRatioUpdate}
@@ -135,6 +159,7 @@ const Menu = () => {
       ) : menuItems && menuItems.length ? (
         <>
           <h3 className="mt-5 mb-3">Menu Items</h3>
+          {removeMenuItemError && <Message>{removeMenuItemError}</Message>}
           <Table striped bordered hover responsive className="table-sm">
             <thead>
               <tr>
@@ -153,7 +178,14 @@ const Menu = () => {
                   </td>
                   <td>{menuItem.item_quantity}</td>
                   <td>₪ {menuItem.price_per_person.toFixed(2)}</td>
-                  <td>PH</td>
+                  <td className="d-flex justify-content-center">
+                    <Button
+                      title="Delete Item"
+                      onClick={() => removeItemHandler(menuItem._id)}
+                    >
+                      <i className="fa fa-trash" aria-hidden="true"></i>
+                    </Button>
+                  </td>
                 </tr>
               ))}
             </tbody>
