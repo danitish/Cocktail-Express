@@ -5,6 +5,9 @@ import {
   DELETE_EVENT_FAIL,
   DELETE_EVENT_REQUEST,
   DELETE_EVENT_SUCCESS,
+  EDIT_EVENT_FAIL,
+  EDIT_EVENT_REQUEST,
+  EDIT_EVENT_SUCCESS,
   GET_EVENT_FAIL,
   GET_EVENT_REQUEST,
   GET_EVENT_SUCCESS,
@@ -186,3 +189,29 @@ export const updateEventMenuItemQty =
       });
     }
   };
+export const editEvent = (data) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: EDIT_EVENT_REQUEST });
+    const {
+      userLogin: {
+        userInfo: { token },
+      },
+    } = getState();
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+    await httpService.put(`/api/events/${data.event_id}/edit`, data, config);
+    dispatch({ type: EDIT_EVENT_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: EDIT_EVENT_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
