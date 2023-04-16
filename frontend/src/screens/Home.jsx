@@ -42,6 +42,7 @@ const Home = () => {
   const updateNotes = [
     "Implemented Google Maps Autocomplete when entering an event location in form.",
     "Added Waze re-direct in each event card.",
+    "Enabled event edit page.",
   ];
 
   const [hour, setHour] = useState(new Date().getHours());
