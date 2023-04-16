@@ -6,6 +6,10 @@ import {
   DELETE_EVENT_FAIL,
   DELETE_EVENT_REQUEST,
   DELETE_EVENT_SUCCESS,
+  EDIT_EVENT_FAIL,
+  EDIT_EVENT_REQUEST,
+  EDIT_EVENT_RESET,
+  EDIT_EVENT_SUCCESS,
   GET_EVENT_FAIL,
   GET_EVENT_REQUEST,
   GET_EVENT_RESET,
@@ -100,6 +104,21 @@ export const updateEventMenuItemQtyReducer = (state = {}, action) => {
     case UPDATE_EVENT_MENUITEMQTY_FAIL:
       return { loading: false, error: action.payload };
     case UPDATE_EVENT_MENUITEMQTY_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const editEventReducer = (state = {}, action) => {
+  switch (action.type) {
+    case EDIT_EVENT_REQUEST:
+      return { loading: true };
+    case EDIT_EVENT_SUCCESS:
+      return { loading: false, success: true };
+    case EDIT_EVENT_FAIL:
+      return { loading: false, error: action.payload };
+    case EDIT_EVENT_RESET:
       return {};
     default:
       return state;

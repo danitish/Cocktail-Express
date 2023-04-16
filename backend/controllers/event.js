@@ -168,6 +168,69 @@ const updateMenuItemQty = asyncHandler(async (req, res) => {
   res.send("Updated successfully");
 });
 
+const editEvent = asyncHandler(async (req, res) => {
+  const {
+    event_name,
+    event_date,
+    estimated_income,
+    menu_id,
+    attendance,
+    event_address,
+    lat,
+    lng,
+  } = req.body;
+  const { id } = req.params;
+  let menu_details = {};
+
+  if (!id) {
+    res.status(400);
+    throw new Error("Insufficient values provided");
+  }
+
+  const event = await Event.findById(id);
+  if (!event) {
+    res.status(404);
+    throw new Error("No matching event found");
+  }
+
+  if (menu_id) {
+    const menu = await Menu.findById(menu_id);
+    if (menu) {
+      menu_details.menu_price_per_person = menu.price_per_person;
+      menu_details.menu_name = menu.name;
+    }
+    const menu_items_by_menu_id = await Menu_Item.find({ menu_id }).select(
+      "item_id price_per_person -_id"
+    );
+    const menu_items_by_menu_id_with_qty = menu_items_by_menu_id.map((item) => {
+      return { ...item, qty: 0 };
+    });
+    if (menu_items_by_menu_id_with_qty) {
+      menu_details.menu_items = menu_items_by_menu_id_with_qty;
+    }
+  }
+
+  event.event_name = event_name ? event_name : event.event_name;
+  event.event_date = event_date ? event_date : event.event_date;
+  event.estimated_income = estimated_income
+    ? estimated_income
+    : event.estimated_income;
+  event.attendance = attendance ? attendance : event.attendance;
+  if (event_address && lat && lng) {
+    event.event_location.address = event_address;
+    event.event_location.lat = lat;
+    event.event_location.lng = lng;
+  }
+  if (menu_id === null || menu_id) {
+    event.menu_id = menu_id;
+    event.menu_details = menu_details;
+  }
+
+  await event.save();
+  res.status(200);
+  res.send("Updated successfully");
+});
+
 module.exports = {
   createEvent,
   myEvents,
@@ -175,4 +238,5 @@ module.exports = {
   deleteEvent,
   updateProfit,
   updateMenuItemQty,
+  editEvent,
 };

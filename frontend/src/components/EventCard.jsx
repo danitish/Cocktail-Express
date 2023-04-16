@@ -29,11 +29,11 @@ const EventCard = ({
             >
               <i className="fa fa-trash fa-lg" aria-hidden="true"></i>
             </Button>
-            {/* <Link to={`/events/${id}/edit`}> */}
-            <Button disabled title="Edit Event" className="btn-sm">
-              <i className="fa-solid fa-pen-to-square fa-lg"></i>
-            </Button>
-            {/* </Link> */}
+            <Link to={`/events/${id}/edit`}>
+              <Button title="Edit Event" className="btn-sm">
+                <i className="fa-solid fa-pen-to-square fa-lg"></i>
+              </Button>
+            </Link>
           </div>
         </Card.Header>
         <Card.Body className="d-flex flex-column">

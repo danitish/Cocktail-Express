@@ -159,13 +159,14 @@ const Events = () => {
     }),
     onSubmit(values) {
       if (values.menu_id === "Choose one") {
-        toastifyError("Must select a valid option");
+        toastifyError("Must select a valid menu option");
         return;
       }
       if (values.menu_id === "No menu") {
         dispatch(addEvent({ ...values, lat, lng, menu_id: null }));
+      } else {
+        dispatch(addEvent({ ...values, lat, lng }));
       }
-      dispatch(addEvent({ ...values, lat, lng }));
     },
   });
 
