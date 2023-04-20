@@ -78,7 +78,7 @@ const Home = () => {
             ? "Afternoon, "
             : hour >= 18 && hour < 22
             ? "Evening, "
-            : hour >= 22
+            : hour >= 22 || 0 <= hour < 6
             ? "Night, "
             : ""}
           {userInfo?.full_name.split(" ")[0]}.
