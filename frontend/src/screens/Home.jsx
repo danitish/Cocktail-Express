@@ -39,11 +39,7 @@ const Home = () => {
     },
   ];
 
-  const updateNotes = [
-    "Implemented Google Maps Autocomplete when entering an event location in form.",
-    "Added Waze re-direct in each event card.",
-    "Enabled event edit page.",
-  ];
+  const updateNotes = ["Small UI changes."];
 
   const [hour, setHour] = useState(new Date().getHours());
 
@@ -87,7 +83,7 @@ const Home = () => {
       <hr />
       <h4>
         <Badge bg="info" className="mt-2">
-          Updates: <span className="ms-1">(12.04.23)</span>
+          Updates: <span className="ms-1">(27.06.23)</span>
         </Badge>
       </h4>
       <ul>

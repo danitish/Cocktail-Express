@@ -20,6 +20,7 @@ import { popup } from "../utils/popups";
 import Meta from "../components/Meta";
 import { ADD_ITEM_RESET } from "../store/constants/itemConstants";
 import ReturnTo from "../components/ReturnTo";
+import PlaceholderComp from "../components/PlaceholderComp";
 
 const Items = () => {
   const dispatch = useDispatch();
@@ -159,7 +160,7 @@ const Items = () => {
           </Table>
         </>
       ) : (
-        <h4 className="mt-5">No items found ...</h4>
+        <PlaceholderComp content="פריטים" stateHandler={setToggleAddItemForm} />
       )}
     </>
   );

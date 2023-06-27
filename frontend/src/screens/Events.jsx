@@ -19,6 +19,7 @@ import Meta from "../components/Meta";
 import { ADD_EVENT_RESET } from "../store/constants/eventConstants";
 import httpService from "../services/httpService";
 import { Loader as googleLoader } from "@googlemaps/js-api-loader";
+import PlaceholderComp from "../components/PlaceholderComp";
 
 const Events = () => {
   const [toggleEventForm, setToggleEventForm] = useState(false);
@@ -284,7 +285,10 @@ const Events = () => {
             ))}
           </>
         ) : (
-          <h5 className="mt-5">No events found ...</h5>
+          <PlaceholderComp
+            content="אירועים"
+            stateHandler={setToggleEventForm}
+          />
         )}
       </Row>
     </>
