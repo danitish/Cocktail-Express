@@ -470,7 +470,7 @@ const Event = () => {
       </div>
       <hr />
       <div className="total-pricing mt-4">
-        <h4>Calculations</h4>
+        <h4 className="mt-1 mb-3">Calculations</h4>
         <ListGroup variant="flush">
           <ListGroup.Item>
             <span className="fw-bold">Attendance: </span>

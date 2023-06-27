@@ -16,6 +16,7 @@ import { toastifySuccess } from "../utils/toastify";
 import Meta from "../components/Meta";
 import { useSearchParams } from "react-router-dom";
 import ReturnTo from "../components/ReturnTo";
+import PlaceholderComp from "../components/PlaceholderComp";
 
 const Menus = () => {
   const [toggleMenuForm, setToggleMenuForm] = useState(false);
@@ -124,7 +125,7 @@ const Menus = () => {
             ))}
           </>
         ) : (
-          <h5 className="mt-5">No menus found ...</h5>
+          <PlaceholderComp content="תפריטים" stateHandler={setToggleMenuForm} />
         )}
       </Row>
     </>

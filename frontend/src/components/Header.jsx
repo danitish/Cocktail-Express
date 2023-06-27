@@ -14,7 +14,7 @@ const Header = () => {
   ];
 
   return (
-    <Navbar bg="primary" expand="sm">
+    <Navbar bg="primary" expand="md">
       <Container fluid>
         <Navbar.Toggle aria-controls="basic-navbar-nav" className="me-2" />
         <LinkContainer to="/">
@@ -33,7 +33,7 @@ const Header = () => {
           {userInfo && (
             <Nav className="ms-auto mr-5">
               <NavDropdown
-                className="m-0 me-2 custom-color"
+                className="m-0 me-4 custom-color"
                 title={userInfo.full_name}
                 id="basic-nav-dropdown"
               >
