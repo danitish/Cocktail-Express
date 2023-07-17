@@ -125,7 +125,7 @@ const Menus = () => {
             ))}
           </>
         ) : (
-          <PlaceholderComp content="תפריטים" stateHandler={setToggleMenuForm} />
+          <PlaceholderComp content="menus" stateHandler={setToggleMenuForm} />
         )}
       </Row>
     </>

@@ -285,10 +285,7 @@ const Events = () => {
             ))}
           </>
         ) : (
-          <PlaceholderComp
-            content="אירועים"
-            stateHandler={setToggleEventForm}
-          />
+          <PlaceholderComp content="events" stateHandler={setToggleEventForm} />
         )}
       </Row>
     </>

@@ -160,7 +160,7 @@ const Items = () => {
           </Table>
         </>
       ) : (
-        <PlaceholderComp content="פריטים" stateHandler={setToggleAddItemForm} />
+        <PlaceholderComp content="items" stateHandler={setToggleAddItemForm} />
       )}
     </>
   );

@@ -9,7 +9,7 @@ const PlaceholderComp = ({ content, stateHandler }) => {
       >
         ⚙️
       </span>
-      <p className="placeholder-text">{`לא נמצאו ${content}`}</p>
+      <p className="placeholder-text">{`No ${content} were found`}</p>
     </div>
   );
 };

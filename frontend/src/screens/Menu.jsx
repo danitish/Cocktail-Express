@@ -26,6 +26,7 @@ import {
 import Meta from "../components/Meta";
 import { popup } from "../utils/popups";
 import { ADD_MENUITEM_RESET } from "../store/constants/menuItemConstants";
+import PlaceholderComp from "../components/PlaceholderComp";
 
 const Menu = () => {
   const { id } = useParams();
@@ -192,7 +193,7 @@ const Menu = () => {
           </Table>
         </>
       ) : (
-        <h4 className="mt-5">No items added yet ...</h4>
+        <PlaceholderComp content="items" stateHandler={setToggleAddItemForm} />
       )}
       {menuItems && menuItems.length > 0 && (
         <h5 className="mt-5">
